@@ -5,8 +5,8 @@ module.exports = {
   name: 'ssr',
   entry: './app/ssr.js',
   output: {
-    path: path.join(__dirname, '.', 'build'),
-    filename: 'dist.js',
+    path: path.join(__dirname, '..', 'build'),
+    filename: 'server.js',
     libraryTarget: 'commonjs2',
     publicPath: '/build/',
   },
@@ -17,8 +17,8 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.join(__dirname, '.', 'app'),
-        exclude: path.join(__dirname, '.', 'node_modules'),
+        include: path.join(__dirname, '..', 'app'),
+        exclude: path.join(__dirname, '..', 'node_modules'),
       },
     ],
   },

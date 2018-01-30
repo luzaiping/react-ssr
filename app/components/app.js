@@ -8,7 +8,7 @@ export default class App extends Component {
   }
 
   onClick() {
-    console.log('1111111')
+    console.log('111111133333')
   }
 
   render() {
