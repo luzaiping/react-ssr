@@ -13,7 +13,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <div onClick={this.onClick}> Hello world! </div>
+      <div onClick={this.onClick}> Hello world!!!！！ </div>
     )
   }
 }
