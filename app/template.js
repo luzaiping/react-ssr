@@ -1,6 +1,5 @@
 
-export default ({ body, title }) => {
-  return `
+export default ({ body, title }) => (`
     <!DOCTYPE html>
     <html>
       <head>
@@ -9,5 +8,6 @@ export default ({ body, title }) => {
       
       <body>
         <div id="root">${body}</div>
-  `
-}
+        <script src="/bundle.js"></script>
+  </html>
+`)
