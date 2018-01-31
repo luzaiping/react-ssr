@@ -4,10 +4,10 @@ const { baseDirName, assetsPath, commonLoaders } = require('./webpack.common')
 
 module.exports = {
     name: 'ssr',
-    entry: './app/ssr.js',
+    entry: './server/ssr.js',
     output: {
         path: assetsPath,
-        filename: 'server.js',
+        filename: 'ssr.js',
         libraryTarget: 'commonjs2'
     },
     target: 'node',
