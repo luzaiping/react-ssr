@@ -14,8 +14,8 @@ delete window.__PRE_LOADED_STATE__
 const store = createStore(counter, preLoadedState)
 
 render(
-    <Provider store={store}>
-        <App/>
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <App/>
+  </Provider>,
+  document.getElementById('root')
 )

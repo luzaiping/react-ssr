@@ -45,6 +45,6 @@
     "no-unused-vars" : [1, { "varsIgnorePattern": "autobind" }],
     "no-console": 0,
     "quotes": [2, "single", { "allowTemplateLiterals": true }],
-    "indent": [2,4, {"SwitchCase":0, "VariableDeclarator": {"var":1, "let": 1, "const": 1}}]
+    "indent": [2,2, {"SwitchCase":0, "VariableDeclarator": {"var":1, "let": 1, "const": 1}}]
   }
 }

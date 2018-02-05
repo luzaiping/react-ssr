@@ -8,24 +8,24 @@ import App from '../app/container/app'
 
 export default function render(req, res) {
 
-    // 每个请求都创建一个store
-    const store = createStore(counter)
+  // 每个请求都创建一个store
+  const store = createStore(counter)
 
-    // renderToString 获取组件的 html 内容
-    const rootContent = renderToString(
-        <Provider store={store}>
-            <App />
-        </Provider>
-    )
-    
-    const preLoadedState = store.getState()
+  // renderToString 获取组件的 html 内容
+  const rootContent = renderToString(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
 
-    // 构建完整的response内容
-    const html = template({
-        rootContent,
-        title: 'FROM THE SERVER',
-        preLoadedState
-    })
+  const preLoadedState = store.getState()
 
-    res.send(html)
+  // 构建完整的response内容
+  const html = template({
+    rootContent,
+    title: 'FROM THE SERVER',
+    preLoadedState
+  })
+
+  res.send(html)
 }

@@ -6,19 +6,19 @@
  * @returns {{ type: *, ... }}
  */
 export function createAction(type, ...argNames) {
-    return (...args) => {
-        let action = { type }
-        argNames.forEach((arg, index) => {
-            action[argNames[index]] = args[index]
-        })
-        return action
-    }
+  return (...args) => {
+    let action = { type }
+    argNames.forEach((arg, index) => {
+      action[argNames[index]] = args[index]
+    })
+    return action
+  }
 }
 
 const increment = createAction('INCREMENT')
 const decrement = createAction('DECREMENT')
 
 export default {
-    increment,
-    decrement
+  increment,
+  decrement
 }
