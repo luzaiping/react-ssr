@@ -29,5 +29,8 @@ module.exports = {
       include: [path.resolve(baseDirName, 'app'), path.resolve(baseDirName, 'server')],
       exclude: path.resolve(baseDirName, 'node_modules')
     }
-  ]
+  ],
+  resolve: {
+    extensions: ['.js', '.jsx']
+  }
 }

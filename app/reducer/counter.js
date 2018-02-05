@@ -1,17 +1,17 @@
 
-export default (state = { counter: 1, items: ['XM'] }, action) => {
+export default (state = { number: 1, items: ['FJ'] }, action) => {
   switch (action.type) {
   case 'INCREMENT':
     return {
-      counter: state.counter + 1,
+      number: state.number + 1,
       items: [
         ...state.items,
-        'ND'
+        'XM'
       ]
     }
   case 'DECREMENT':
     return {
-      counter: state.counter - 1,
+      number: state.number - 1,
       items: state.items.slice(0, state.items.length - 1)
     }
   default:

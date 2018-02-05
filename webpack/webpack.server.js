@@ -1,6 +1,6 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
-const { baseDirName, assetsPath, commonLoaders } = require('./webpack.common')
+const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
   name: 'ssr',
@@ -28,5 +28,6 @@ module.exports = {
         }
       }
     ])
-  }
+  },
+  resolve
 }

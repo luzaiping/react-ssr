@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const app = express()
 
-// 生产环境，直接请求已经编译好的client文件，对应目录是 dist 文件夹
+// 生产环境，直接请求已经编译好的client bundle.js文件，对应目录是 dist 文件夹
 if (isProduction) {
   app.use(express.static('dist'))
 } else {

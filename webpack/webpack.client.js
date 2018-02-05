@@ -1,5 +1,5 @@
 const path = require('path')
-const { baseDirName, assetsPath, commonLoaders } = require('./webpack.common')
+const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -28,5 +28,6 @@ module.exports = {
         ]
       }
     ])
-  }
+  },
+  resolve
 }
