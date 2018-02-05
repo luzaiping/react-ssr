@@ -14,18 +14,11 @@ import DevTools from './devTools'
 
 const enhancer = compose(
   applyMiddleware(thunk),
-  (global && global.devToolsExtension) ? global.devToolsExtension() : DevTools.instrument()
+  global.devToolsExtension ? global.devToolsExtension() : DevTools.instrument()
 )
 
-/* const finalCreateStore = compose(
-  // applyMiddleware(thunk, sagaMiddleware),
-  // reduxReactRouter({ getRoutes, createHistory }),
-  // applyMiddleware(createLogger()),
-  window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument()
-)(createStore) */
-
 export default function configureStore(rootReducer, preloadedState) {
-  const store = enhancer(createStore)(rootReducer, preloadedState)
+  const store = createStore(rootReducer, preloadedState, enhancer)
   // sagaMiddleware.run(rootSage)
   if (module.hot) {
     module.hot.accept('../reducers', () => {

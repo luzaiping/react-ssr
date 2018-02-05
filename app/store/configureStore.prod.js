@@ -14,13 +14,8 @@ const enhancer = compose(
   applyMiddleware(thunk)
 )
 
-/* const finalCreateStore = compose(
-  applyMiddleware(thunk),
-  // reduxRouter({ getRoutes, createHistory })
-)(createStore) */
-
 export default function configureStore(rootReducer, preloadedState) {
-  const store = enhancer(createStore)(rootReducer, preloadedState)
+  const store = createStore(rootReducer, preloadedState, enhancer)
   // sagaMiddleware.run(rootSage)
   return store
 }

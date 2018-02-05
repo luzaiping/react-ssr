@@ -1,5 +1,4 @@
 import React from 'react'
-// import { createStore } from 'redux'
 import { renderToString } from 'react-dom/server'
 import template from './template'
 
@@ -9,20 +8,21 @@ import configureStore from '../app/store/configureStore'
 
 export default function render(req, res) {
 
-  // const store = createStore(rootReducer)
-  const store = configureStore(rootReducer)
-
+  let initState = { counter: {number: 2, items: ['FJ', 'XM'] }}
+  
+  const store = configureStore(rootReducer, initState)
+  
   // renderToString 获取组件的 html 内容
   const rootContent = renderToString( <Root store={store}/> )
-
-  const preLoadedState = store.getState()
+  
+  const preloadedState = store.getState()
 
   // 构建完整的response内容
   const html = template({
     rootContent,
     title: 'FROM THE SERVER',
-    preLoadedState
+    preloadedState
   })
-
+  
   res.send(html)
 }

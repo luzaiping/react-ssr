@@ -1,5 +1,5 @@
 
-export default ({ rootContent, title, preLoadedState }) => (`
+export default ({ rootContent, title, preloadedState }) => (`
   <!DOCTYPE html>
   <html>
     <head>
@@ -9,7 +9,7 @@ export default ({ rootContent, title, preLoadedState }) => (`
     <body>
       <div id="root">${rootContent}</div>
       <script>
-        window.__PRE_LOADED_STATE__ = ${JSON.stringify(preLoadedState).replace(/</g, '\\u003c')}
+        window.__PRE_LOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
       </script>
       <script src="/bundle.js"></script>
   </html>
