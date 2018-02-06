@@ -1,8 +1,8 @@
 
 import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import { Router, browserHistory, hashHistory } from 'react-router'
 import routes from './routes'
+import { Router } from 'react-router'
 
 /* let child
 
@@ -25,14 +25,15 @@ if (['production', 'beta', 'debug'].includes(process.env.NODE_ENV)) {
 export default class Root extends Component {
   static displayName = 'Root'
   static propTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   }
 
   render() {
     const { store } = this.props
     return (
       <Provider store={store}>
-        <Router routes={routes} history={hashHistory}/>
+        <Router routes={routes} history={history}/>
       </Provider>
     )
   }

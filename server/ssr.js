@@ -5,7 +5,6 @@ import { match, RouterContext } from 'react-router'
 import template from './template'
 
 import routes from '../app/routes'
-import rootReducer from '../app/reducer'
 import configureStore from '../app/store/configureStore'
 import { Provider } from 'react-redux'
 
@@ -22,13 +21,12 @@ function handleRedirect(res, redirect) {
 }
 
 function handleRouter(res, props) {
-
-  // 构建创始的 redux store， initState 是可选，根据实际需要进行调整，大部分项目都不需要
+  
+  // 构建创始的 redux store， initState 是可选，根据实际需要进行调整，大部分应用不需要
   let initState = { counter: {number: 3, items: ['FJ', 'XM', 'SM'] }}
-  const store = configureStore(rootReducer, initState)
+  const store = configureStore(initState)
 
   // renderToString 获取组件的 html 内容
-  // 
   const rootContent = renderToString(
     <Provider store={store}>
       <RouterContext {...props} />

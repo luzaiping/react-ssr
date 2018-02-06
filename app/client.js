@@ -1,19 +1,25 @@
 import React from 'react'
 import { render } from 'react-dom'
-// import { createStore } from 'redux'
-import rootReducer from './reducer'
+import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
-import Root from './root'
+import routes from './routes'
+
+import { Router, hashHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 
 // Grab the state from a global variable injected into the server-generated HTML
 const preloadedState = window.__PRE_LOADED_STATE__
 delete window.__PRE_LOADED_STATE__
-
 // create redux store with initial state
-const store = configureStore(rootReducer, preloadedState)
-// const store = configureStore(rootReducer)
+const store = configureStore(preloadedState)
+
+// 移除react-router自动添加的_k=xxx参数
+// const hashHistory = useRouterHistory(createHashHistory)({queryKey: false})
+const history = syncHistoryWithStore(hashHistory, store)
 
 render(
-  <Root store={store} />,
+  <Provider store={store}>
+    <Router routes={routes} history={history}/>
+  </Provider>,
   document.getElementById('root')
 )
