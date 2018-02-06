@@ -1,0 +1,26 @@
+import React, { Component } from 'react'
+// import { Link } from 'react-router'
+
+export default class Layout extends Component {
+
+  static fetchData() {} // will be used for server side rendering
+
+  static propTypes = {
+    children: React.PropTypes.object
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Layout</h1>
+        <ul>
+          <li><a href='#/'>Home</a></li>
+          <li><a href='#/test'>Test</a></li>
+          {/* <li><Link to='/'>Home</Link></li>
+          <li><Link to='/test'>Test</Link></li> */}
+        </ul>
+        {this.props.children}
+      </div>
+    )
+  }
+}
