@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import routes from './routes'
 
-import { Router, hashHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 // Grab the state from a global variable injected into the server-generated HTML
@@ -15,7 +15,7 @@ const store = configureStore(preloadedState)
 
 // 移除react-router自动添加的_k=xxx参数
 // const hashHistory = useRouterHistory(createHashHistory)({queryKey: false})
-const history = syncHistoryWithStore(hashHistory, store)
+const history = syncHistoryWithStore(browserHistory, store)
 
 render(
   <Provider store={store}>

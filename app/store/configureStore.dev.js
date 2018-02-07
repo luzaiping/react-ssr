@@ -1,33 +1,19 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-// import { reduxReactRouter } from 'redux-router'
-// import createHistory from 'history/lib/createHashHistory'
-import thunk from 'redux-thunk'
-// import createLogger from 'redux-logger'
-
-// import getRoutes from '../routes'
-// import rootReducer from '../reducers'
+import { createStore, applyMiddleware, compose } from 'redux'
+import reduxThunk from 'redux-thunk'
+import reduxLogger from 'redux-logger'
+// import routerMiddleware from 'react-router-redux/lib/middleware'
 // import createSagaMiddleware from 'redux-saga'
 // import rootSage from '../saga/rootSaga'
-// import {hashHistory} from 'react-router'
-// import { routerReducer } from 'react-router-redux'
-// import routerMiddleware from 'react-router-redux/lib/middleware'
 import DevTools from './devTools'
-import reducer from '../reducer'
-import { routerReducer } from 'react-router-redux'
 
 // const sagaMiddleware = createSagaMiddleware()
 
-const rootReducer = combineReducers({
-  ...reducer,
-  routing: routerReducer
-})
-
 const enhancer = compose(
-  applyMiddleware(thunk),
+  applyMiddleware(reduxThunk, reduxLogger),
   global.devToolsExtension ? global.devToolsExtension() : DevTools.instrument()
 )
 
-export default function configureStore(preloadedState) {
+export default function configureStore(rootReducer, preloadedState) {
   const store = createStore(rootReducer, preloadedState, enhancer)
   // sagaMiddleware.run(rootSage)
   if (module.hot) {
