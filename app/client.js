@@ -13,8 +13,7 @@ delete window.__PRE_LOADED_STATE__
 // create redux store with initial state
 const store = configureStore(preloadedState)
 
-// 移除react-router自动添加的_k=xxx参数
-// const hashHistory = useRouterHistory(createHashHistory)({queryKey: false})
+// Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
 
 render(

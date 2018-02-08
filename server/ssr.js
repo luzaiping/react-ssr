@@ -30,34 +30,52 @@ function handleRedirect(res, redirect) {
  */
 function handleRouter(res, props) {
 
-  // 构建创始的 redux store， initState 是可选，根据实际需要进行调整，大部分应用不需要
-  let preloadedState = { counter: {number: 3, items: ['FJ', 'XM', 'SM'] }}
-  
-  // 
-  const store = configureStore(preloadedState)
+  // 构建创始的 redux store
+  let store = configureStore()
 
-  // renderToString 生成匹配路由组件的 html 内容
-  // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
-  const rootContent = renderToString(
-    <Provider store={store}>
-      <RouterContext {...props} />
-    </Provider>
-  )
+  fetchData()
+    .then( () => {
+      
+      console.log('fetchData success.....')
+      
+      // 得到请求数据后的state
+      let preloadedState = store.getState()
+      console.log('preloadedState:', preloadedState)
+      
+      store =  configureStore(preloadedState)
 
-  // const preloadedState = store.getState()
+      // renderToString 生成匹配路由组件的 html 内容
+      // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
+      const rootContent = renderToString(
+        <Provider store={store}>
+          <RouterContext {...props} />
+        </Provider>
+      )
+    
+      // 构建完整的response内容
+      const html = template({
+        rootContent,
+        title: 'FROM THE SERVER',
+        preloadedState
+      })
+    
+      res.status(200).send(html)
+    })
+    .catch(function (error) {
+      console.log(error.stack)
+    })
 
-  // 构建完整的response内容
-  const html = template({
-    rootContent,
-    title: 'FROM THE SERVER',
-    preloadedState
-  })
-
-  res.status(200).send(html)
+  function fetchData() {
+    let { params,  components = [] } = props
+    return new Promise(function (resolve) {
+      let comp = components[components.length - 1].WrappedComponent
+      resolve(comp.fetchData ? comp.fetchData( store, params ) : {})
+    })
+  }
 }
 
 export function ssrMiddleware(req, res) {
-  console.log('=====:', req.url)
+  console.log('********************** ssr *****************')
   match({ routes, location: req.url },
     (err, redirect, props) => {
       if (err) handleError(res, err)

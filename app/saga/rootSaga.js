@@ -1,0 +1,21 @@
+
+import { takeEvery } from 'redux-saga'
+import { GET_DATA } from 'constants/actionConstants'
+import { mapPayload } from 'utils/sagaUtils'
+import { put, call } from 'redux-saga/effects'
+import userService from '../service/userService'
+
+export default function* rootSaga() {
+  yield [
+    takeEvery(GET_DATA.REQUEST, mapPayload(getData))
+  ]
+}
+
+export function* getData() {
+  try {
+    let payload = yield call([ userService, userService.getData ])
+    yield put({ type: GET_DATA.SUCCESS, payload })
+  } catch(error) {
+    yield put({ type: GET_DATA.FAILURE, error })
+  }
+}

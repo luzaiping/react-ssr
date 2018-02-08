@@ -3,11 +3,11 @@ const nodeExternals = require('webpack-node-externals')
 const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
-  name: 'ssr',
-  entry: './server/ssr.js',
+  name: 'server',
+  entry: ['babel-polyfill', './server/index.js'],
   output: {
     path: assetsPath,
-    filename: 'ssr.js',
+    filename: 'server.js',
     libraryTarget: 'commonjs2'
   },
   target: 'node',

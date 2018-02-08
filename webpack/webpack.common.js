@@ -34,6 +34,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     alias: {
       app: path.resolve(baseDirName, 'app'),
+      constants: path.resolve(baseDirName, 'app/constants'),
       utils: path.resolve(baseDirName, 'app/utils')
     }
   }

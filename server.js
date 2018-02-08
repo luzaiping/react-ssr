@@ -6,7 +6,8 @@ const path = require('path')
 
 const webpackConfig = require('./webpack/webpack.client.dev.js')
 
-const ssrMiddleware = require('./dist/ssr.js').ssrMiddleware // 请求通过webpack编译好的 dist 文件，服务启动前应该先编译好这个文件
+const ssrMiddleware = require('./dist/server.js').ssrMiddleware
+const apiMiddleware = require('./dist/server.js').apiMiddleware
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -25,6 +26,9 @@ if (isProduction) {
     publicPath: webpackConfig.output.publicPath
   }))
 }
+
+app.get('/api/*', apiMiddleware)
+
 app.use(ssrMiddleware) // 所有请求交由 ssrMiddleware 处理
 
 const port = 4000

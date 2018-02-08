@@ -13,3 +13,16 @@ export function createAction(type, ...argNames) {
     return action
   }
 }
+
+/**
+ * 创建actionConstant对象，包含REQUEST，SUCCESS，FAILURE
+ * @param type XX
+ * @returns {{REQUEST: string, SUCCESS: string, FAILURE: string}}
+ */
+export function createAsyncActionType(type) {
+  return {
+    REQUEST: `${type}_REQUEST`,
+    SUCCESS: `${type}_SUCCESS`,
+    FAILURE: `${type}_FAILURE`
+  }
+}

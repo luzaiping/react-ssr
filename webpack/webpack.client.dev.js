@@ -3,7 +3,7 @@ const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.c
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
-  entry: './app/client.js',
+  entry: ['babel-polyfill', './app/client.js'],
   output: {
     path: assetsPath,
     filename: 'bundle.js',

@@ -1,24 +1,13 @@
 
-/**
- * 创建action减少模版代码.
- * @param type  actionType
- * @param argNames 所有附带数据的属性名称
- * @returns {{ type: *, ... }}
- */
-export function createAction(type, ...argNames) {
-  return (...args) => {
-    let action = { type }
-    argNames.forEach((arg, index) => {
-      action[argNames[index]] = args[index]
-    })
-    return action
-  }
-}
+import { INCREMENT, DECREMENT, GET_DATA, PAYLOAD } from 'constants/actionConstants'
+import { createAction } from 'utils/actionUtils'
 
-const increment = createAction('INCREMENT')
-const decrement = createAction('DECREMENT')
+const increment = createAction(INCREMENT)
+const decrement = createAction(DECREMENT)
+const getData = createAction(GET_DATA.REQUEST, PAYLOAD)
 
 export default {
   increment,
-  decrement
+  decrement,
+  getData
 }
