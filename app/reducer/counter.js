@@ -17,6 +17,7 @@ export default (state = { count: 1, items: ['FJ'] }, action) => {
     }
   case GET_DATA.SUCCESS: {
     let { payload = [] } = action
+    console.log('============ update reducer ================')
     return {
       count: payload.length,
       items: payload

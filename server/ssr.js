@@ -1,12 +1,12 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { match, RouterContext } from 'react-router'
-
+import { match, RouterContext, createMemoryHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 import template from './template'
-
 import routes from '../app/routes'
 import configureStore from '../app/store/configureStore'
 import { Provider } from 'react-redux'
+import { runSaga } from '../app/saga/rootSaga'
 
 function handleError(res, err) {
   res.status(500).send(err.message)
@@ -28,21 +28,22 @@ function handleRedirect(res, redirect) {
  * @param {*} res 
  * @param {*} props 
  */
-function handleRouter(res, props) {
+function handleRouter(res, props, store, history) {
 
-  // 构建创始的 redux store
-  let store = configureStore()
+  let tasks = runSaga() // 注册 saga
+
+  console.log(`=========== tasks ====================:`, tasks)
 
   fetchData()
     .then( () => {
-      
       console.log('fetchData success.....')
       
       // 得到请求数据后的state
       let preloadedState = store.getState()
-      console.log('preloadedState:', preloadedState)
+      console.log('============preloadedState==============', preloadedState)
       
-      store =  configureStore(preloadedState)
+      // 基于 preloadedState 更新 store，下面这句是否需要？
+      store = configureStore(history, preloadedState)
 
       // renderToString 生成匹配路由组件的 html 内容
       // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
@@ -66,21 +67,40 @@ function handleRouter(res, props) {
     })
 
   function fetchData() {
-    let { params,  components = [] } = props
-    return new Promise(function (resolve) {
-      let comp = components[components.length - 1].WrappedComponent
-      resolve(comp.fetchData ? comp.fetchData( store, params ) : {})
-    })
+    let { params, components = [] } = props
+
+    // 获取目标 component
+    let component = components[components.length - 1].WrappedComponent
+    if (component.fetchData) {
+      store.dispatch(component.fetchData(params))
+      console.log('======= wait for saga resolve ==============')
+      // return tasks.done // 返回一个promise
+    } else {
+      // return Promise.resolve({})
+    }
+    return Promise.resolve({})
+
+    // return new Promise(function (resolve) {
+    //   // resolve(comp.fetchData ? comp.fetchData( store, params ) : {})
+    // })
   }
 }
 
 export function ssrMiddleware(req, res) {
   console.log('********************** ssr *****************')
-  match({ routes, location: req.url },
+
+  const memoryHistory = createMemoryHistory(req.url)
+  
+  // 构建创始的 redux store
+  let store = configureStore(memoryHistory)
+  const history = syncHistoryWithStore(memoryHistory, store)
+
+  /* react router match history */
+  match({ history, routes, location: req.url },
     (err, redirect, props) => {
       if (err) handleError(res, err)
       else if (redirect) handleRedirect(res, redirect)
-      else if (props) handleRouter(res, props)
+      else if (props) handleRouter(res, props, store, history)
       else handleNotFound(res)
     })
 }

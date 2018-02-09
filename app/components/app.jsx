@@ -3,13 +3,14 @@ import styles from './app.css'
 import counterAction from '../actions/counterAction'
 
 export default class App extends Component {
-
-  static fetchData(store, params) {
-    console.log('=========== getData ==========')
-
-    return store.dispatch(counterAction.getData(params))
-  }
-
+  /**
+   * 定义获取数据的action function
+   static fetchData(store, params) {
+     console.log('=========== start to getData ==========')
+     return counterAction.getData(params)
+    }
+  */
+    
   /* componentDidMount() {
     console.log('=========== getData ==========')
     this.props.getData()

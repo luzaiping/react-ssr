@@ -1,26 +1,32 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import reduxThunk from 'redux-thunk'
 import reduxLogger from 'redux-logger'
-// import routerMiddleware from 'react-router-redux/lib/middleware'
-import createSagaMiddleware from 'redux-saga'
-import rootSage from '../saga/rootSaga'
+import { routerMiddleware } from 'react-router-redux'
+import { sagaMiddleware, runSaga } from '../saga/rootSaga'
 import DevTools from './devTools'
+import rootReducer from '../reducer'
+import createSagaMiddleware from 'redux-saga'
 
-const sagaMiddleware = createSagaMiddleware()
+export default function configureStore(history, preloadedState) {
 
-const enhancer = compose(
-  applyMiddleware(reduxThunk, sagaMiddleware, reduxLogger),
-  global.devToolsExtension ? global.devToolsExtension() : DevTools.instrument()
-)
+  // const sagaMiddleware = createSagaMiddleware()
 
-export default function configureStore(rootReducer, preloadedState) {
+  const enhancer = compose(
+    applyMiddleware(reduxThunk, routerMiddleware(history), sagaMiddleware),
+    global.devToolsExtension ? global.devToolsExtension() : DevTools.instrument()
+  )
+
   const store = createStore(rootReducer, preloadedState, enhancer)
-  sagaMiddleware.run(rootSage)
+
+  // runSaga()
+  // sagaMiddleware.run(rootSaga) // 运行 saga tasks
+
   if (module.hot) {
     module.hot.accept('../reducers', () => {
       const nextRootReducer = require('../reducers')
       store.replaceReducer(nextRootReducer)
     })
   }
+  
   return store
 }
