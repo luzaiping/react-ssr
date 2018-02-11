@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
-  entry: './app/client.js',
+  entry: ['babel-polyfill', './app/client.js'],
   output: {
     path: assetsPath,
     filename: 'bundle.js',
