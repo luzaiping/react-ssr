@@ -67,10 +67,11 @@ function handleRouter(res, props, store, history) {
     let { location = {}, components = [] } = props
 
     return new Promise( (resolve) => {
-      // 获取目标 component
-      let component = components[components.length - 1].WrappedComponent
+      // 获取最后一个 component，如果 component 使用 react-redux connect 包装起来，则返回对应的 WrappedComponent，否则返回当前component
+      let lastComponent = components[components.length - 1]
+      let component = lastComponent.WrappedComponent || lastComponent // 这边要区分是获取哪个component
 
-      resolve( component.fetchData ? store.dispatch(component.fetchData(location)) : {})
+      resolve( component.fetchData ? store.dispatch(component.fetchData(location)) : {} )
 
       /* if (component.fetchData) {
         console.log('======= wait for saga resolve ==============')
@@ -94,8 +95,15 @@ export function ssrMiddleware(req, res) {
   let store = configureStore(memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
+  console.log('req query', req.query)
+  
+  let location = req.query.r || '/'
+  
+  console.log('location', location)
+  
   /* react router match history */
-  match({ history, routes, location: req.url },
+  // match({ history, routes, location: req.url },
+  match({ history, routes, location },
     (err, redirect, props) => {
       if (err) handleError(res, err)
       else if (redirect) handleRedirect(res, redirect)
