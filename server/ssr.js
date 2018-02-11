@@ -30,17 +30,14 @@ function handleRedirect(res, redirect) {
  */
 function handleRouter(res, props, store, history) {
 
-  let tasks = runSaga() // 注册 saga
+  // let tasks = runSaga() // 注册 saga
 
-  console.log(`=========== tasks ====================:`, tasks)
+  // console.log(`=========== tasks ====================:`, tasks)
 
   fetchData()
     .then( () => {
-      console.log('fetchData success.....')
-      
       // 得到请求数据后的state
       let preloadedState = store.getState()
-      console.log('============preloadedState==============', preloadedState)
       
       // 基于 preloadedState 更新 store，下面这句是否需要？
       store = configureStore(history, preloadedState)
@@ -67,18 +64,22 @@ function handleRouter(res, props, store, history) {
     })
 
   function fetchData() {
-    let { params, components = [] } = props
+    let { location = {}, components = [] } = props
 
-    // 获取目标 component
-    let component = components[components.length - 1].WrappedComponent
-    if (component.fetchData) {
-      store.dispatch(component.fetchData(params))
-      console.log('======= wait for saga resolve ==============')
-      // return tasks.done // 返回一个promise
-    } else {
-      // return Promise.resolve({})
-    }
-    return Promise.resolve({})
+    return new Promise( (resolve) => {
+      // 获取目标 component
+      let component = components[components.length - 1].WrappedComponent
+
+      resolve( component.fetchData ? store.dispatch(component.fetchData(location)) : {})
+
+      /* if (component.fetchData) {
+        console.log('======= wait for saga resolve ==============')
+        // return tasks.done // 返回一个promise
+        return Promise.resolve()
+      } else {
+        // return Promise.resolve({})
+      } */
+    })
 
     // return new Promise(function (resolve) {
     //   // resolve(comp.fetchData ? comp.fetchData( store, params ) : {})
@@ -87,8 +88,6 @@ function handleRouter(res, props, store, history) {
 }
 
 export function ssrMiddleware(req, res) {
-  console.log('********************** ssr *****************')
-
   const memoryHistory = createMemoryHistory(req.url)
   
   // 构建创始的 redux store

@@ -5,16 +5,16 @@ import counterAction from '../actions/counterAction'
 export default class App extends Component {
   /**
    * 定义获取数据的action function
-   static fetchData(store, params) {
-     console.log('=========== start to getData ==========')
-     return counterAction.getData(params)
-    }
-  */
+   */
+  static fetchData(params) {
+    // return store.dispatch(counterAction.getData(params))
+    return counterAction.getData(params)
+  }
     
-  /* componentDidMount() {
-    console.log('=========== getData ==========')
+  componentDidMount() {
+    console.log('=========== did mount ==========')
     this.props.getData()
-  } */
+  }
 
   render() {
     let { count, items = [], increment, decrement } = this.props

@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import routes from './routes'
-// import { runSaga } from './saga/rootSaga.js'
+import { runSaga } from './saga/rootSaga.js'
 
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'

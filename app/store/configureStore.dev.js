@@ -12,7 +12,8 @@ export default function configureStore(history, preloadedState) {
   // const sagaMiddleware = createSagaMiddleware()
 
   const enhancer = compose(
-    applyMiddleware(reduxThunk, routerMiddleware(history), sagaMiddleware),
+    // applyMiddleware(reduxThunk, routerMiddleware(history), sagaMiddleware),
+    applyMiddleware(reduxThunk, routerMiddleware(history)),
     global.devToolsExtension ? global.devToolsExtension() : DevTools.instrument()
   )
 
