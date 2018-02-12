@@ -51,12 +51,9 @@ function loaderMiddleware(req, res) {
  * @param {Response} res 
  */
 function ssrMiddleware(req = {}, res) {
-  let { query } = req
+  let { query, params } = req
 
-  console.log('path ======', req.path)
-  console.log('query ======', query)
-
-  let templateName = req.path.substring(req.path.indexOf('/ssr') + 4) || 'template'
+  let templateName = (params && params[0]) || 'template'
   let file = path.join(__dirname, 'dist', `${templateName}.html`)
   
   fs.readFile(file, 'utf8', (err, data) => {
