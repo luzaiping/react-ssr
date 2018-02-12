@@ -10,16 +10,15 @@ export default class App extends Component {
     // return store.dispatch(counterAction.getData(params))
     return counterAction.getData(params)
   }
-    
+
   componentDidMount() {
-    console.log('=========== did mount ==========')
     this.props.getData()
   }
 
   render() {
     let { count, items = [], increment, decrement } = this.props
     return (
-      <div onClick={this.onClick} className={styles.wrapper}> 
+      <div onClick={this.onClick} className={styles.wrapper}>
         当前值：{count}
         <div className={styles.btnWrapper}>
           <input type='button' value='increment' onClick={increment} className={styles.firstBtn}/>
@@ -27,11 +26,14 @@ export default class App extends Component {
         </div>
         <ul>
           {
-            items.map((item, index) => (
-              <li key={index}>
-                {item}
-              </li>
-            ))
+            items.map((item = {}, index) => {
+              let { name, quantity } = item
+              return (
+                <li key={index}>
+                  {name}: quantity_{quantity}
+                </li>
+              )
+            })
           }
         </ul>
       </div>

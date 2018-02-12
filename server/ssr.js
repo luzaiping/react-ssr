@@ -1,23 +1,45 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
+import { Provider } from 'react-redux'
 import { match, RouterContext, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import template from './template'
-import routes from '../app/routes'
-import configureStore from '../app/store/configureStore'
-import { Provider } from 'react-redux'
-import { runSaga } from '../app/saga/rootSaga'
+import routes from 'app/routes'
+import configureStore from 'app/store/configureStore'
 
-function handleError(res, err) {
-  res.status(500).send(err.message)
-}
+/**
+ * @param {String} template 模板文件的内容
+ * @param {Object} model 渲染组件所需的初始数据
+ * @param {String} messages 国际化数据
+ * @param {String} route 浏览器端路由匹配地址
+ * @returns {Promise} 返回路由匹配结果的promise
+ */
+export function render(route = '/', template, model, messages) {
+  const memoryHistory = createMemoryHistory(`/${route}`)
 
-function handleNotFound(res) {
-  res.status(400).send('Not Found')
-}
+  // 构建创始的 redux store
+  let store = configureStore(memoryHistory)
+  const history = syncHistoryWithStore(memoryHistory, store)
+  
+  return new Promise((resolve, reject) => {
+    /* react router match history */
+    // match({ history, routes, location: req.url },
+    match({ history, routes, location: route }, (err, redirectLocation, renderProps) => {
 
-function handleRedirect(res, redirect) {
-  res.redirect(302, redirect.pathname + redirect.search)
+      if (err) {
+        err.code = 500
+        reject(err)
+      } else if (redirectLocation) {
+        resolve({ code: 302, redirectLocation })
+      } else if (renderProps) {
+        // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
+        resolve(handleRouter(template, renderProps, store, history))
+      } else {
+        let error = new Error(`route: ${route} can not match any page!`)
+        error.code = 400
+        reject(error)
+      }
+    })
+  })
 }
 
 /**
@@ -25,89 +47,51 @@ function handleRedirect(res, redirect) {
  * 1、创建初始 redux store
  * 2、调用 renderToString 生成匹配路由 component 的 html 内容
  * 3、
- * @param {*} res 
- * @param {*} props 
+ * @param {*} renderProps
+ * @returns {Promise} 路由处理的结果，封装成Promise对象
  */
-function handleRouter(res, props, store, history) {
+function handleRouter(template, renderProps, store, history) {
 
-  // let tasks = runSaga() // 注册 saga
-
-  // console.log(`=========== tasks ====================:`, tasks)
-
-  fetchData()
+  return fetchData()
     .then( () => {
-      // 得到请求数据后的state
+      // 这边的 store 已经包含了初始数据
       let preloadedState = store.getState()
-      
-      // 基于 preloadedState 更新 store，下面这句是否需要？
+
+      // 基于 preloadedState 更新 store，下面这句是否需要
       store = configureStore(history, preloadedState)
 
       // renderToString 生成匹配路由组件的 html 内容
       // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
       const rootContent = renderToString(
         <Provider store={store}>
-          <RouterContext {...props} />
+          <RouterContext {...renderProps} />
         </Provider>
       )
-    
-      // 构建完整的response内容
-      const html = template({
-        rootContent,
-        title: 'FROM THE SERVER',
-        preloadedState
-      })
-    
-      res.status(200).send(html)
+
+      // 构建完整的html内容
+      let html = template
+        .replace('SSR_ROOT_CONTENT', rootContent)
+        .replace('SSR_PRE_LOADED_STATE', JSON.stringify(preloadedState).replace(/</g, '\\u003c'))
+
+      return { html }
     })
     .catch(function (error) {
-      console.log(error.stack)
+      return Promise.reject(error)
     })
 
+  /**
+   * 获取匹配路由的组件，如果组件有静态的 fetchData 方法，则调用该方法获取初始数据
+   */
   function fetchData() {
-    let { location = {}, components = [] } = props
+    let { location = {}, components = [] } = renderProps
 
     return new Promise( (resolve) => {
       // 获取最后一个 component，如果 component 使用 react-redux connect 包装起来，则返回对应的 WrappedComponent，否则返回当前component
       let lastComponent = components[components.length - 1]
-      let component = lastComponent.WrappedComponent || lastComponent // 这边要区分是获取哪个component
+      let component = lastComponent.WrappedComponent || lastComponent // 这边要区分是smart component 还是 dump component
 
+      // 异步action请求成功后，resolve promise
       resolve( component.fetchData ? store.dispatch(component.fetchData(location)) : {} )
-
-      /* if (component.fetchData) {
-        console.log('======= wait for saga resolve ==============')
-        // return tasks.done // 返回一个promise
-        return Promise.resolve()
-      } else {
-        // return Promise.resolve({})
-      } */
     })
-
-    // return new Promise(function (resolve) {
-    //   // resolve(comp.fetchData ? comp.fetchData( store, params ) : {})
-    // })
   }
-}
-
-export function ssrMiddleware(req, res) {
-  const memoryHistory = createMemoryHistory(req.url)
-  
-  // 构建创始的 redux store
-  let store = configureStore(memoryHistory)
-  const history = syncHistoryWithStore(memoryHistory, store)
-
-  console.log('req query', req.query)
-  
-  let location = req.query.r || '/'
-  
-  console.log('location', location)
-  
-  /* react router match history */
-  // match({ history, routes, location: req.url },
-  match({ history, routes, location },
-    (err, redirect, props) => {
-      if (err) handleError(res, err)
-      else if (redirect) handleRedirect(res, redirect)
-      else if (props) handleRouter(res, props, store, history)
-      else handleNotFound(res)
-    })
 }

@@ -17,7 +17,7 @@ export default class Layout extends Component {
           {/* <li> <a href='#/'>Home</a></li>
           <li><a href='#/test'>Test</a></li> */}
           <li><Link to='/'>Home</Link></li>
-          <li><Link to={{ pathname: '/test', search: '?r=test' }}>Test</Link></li>
+          <li><Link to='/test'>Test</Link></li>
         </ul>
         {this.props.children}
       </div>

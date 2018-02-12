@@ -1,7 +1,5 @@
-const ssrMiddleware = require('./ssr.js').ssrMiddleware
-const apiMiddleware = require('./api.js').apiMiddleware
+const render = require('./ssr.js').render
 
 module.exports = {
-  ssrMiddleware,
-  apiMiddleware
+  render
 }

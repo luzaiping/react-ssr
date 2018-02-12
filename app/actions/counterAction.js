@@ -14,7 +14,7 @@ const getData = function (params = {}) {
   return dispatch => {
     dispatch(getDataRequest()) // 触发异步请求的action
 
-    return request('http://localhost:4000/api/getData')
+    return request('http://192.168.85.22:8081/items')
       .then( response => {
         dispatch(getDataSUCCESS(response))
       })

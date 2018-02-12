@@ -1,5 +1,6 @@
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   entry: ['babel-polyfill', './server/index.js'],
   output: {
     path: assetsPath,
-    filename: 'server.js',
+    filename: 'ssr.js',
     libraryTarget: 'commonjs2'
   },
   target: 'node',
@@ -29,5 +30,10 @@ module.exports = {
       }
     ])
   },
+  plugins: [
+    new CopyWebpackPlugin([
+      {from: path.join(baseDirName, 'template'), to: path.join(baseDirName, 'dist')}
+    ])
+  ],
   resolve
 }
