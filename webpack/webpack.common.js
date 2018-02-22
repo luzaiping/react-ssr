@@ -26,7 +26,6 @@ module.exports = {
       use: {
         loader: 'babel-loader'
       },
-      include: [path.resolve(baseDirName, 'app'), path.resolve(baseDirName, 'server')],
       exclude: path.resolve(baseDirName, 'node_modules')
     }
   ],

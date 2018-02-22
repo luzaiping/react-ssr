@@ -22,7 +22,7 @@ if (isProduction) {
   app.use(express.static('dist'))
 } else {
   // 开发环境 使用 webpack-dev-middleware 在内存中运行 bundler.js 文件
-  const webpackConfig = require('./webpack/webpack.client.dev.js')
+  const webpackConfig = require('./webpack/webpack.app.dev.js')
   const compiler = webpack(webpackConfig)
   app.use(devMiddleware(compiler, {
     noInfo: true,
@@ -31,8 +31,8 @@ if (isProduction) {
 }
 
 // app.get('/api/*', apiMiddleware)
-app.use('/ssr/**', ssrMiddleware) // 所有 ssr 请求交由 ssrMiddleware 处理
-app.use(loaderMiddleware)
+app.use('/ssr/**', ssrMiddleware) // 所有 ssr 开头的请求交由 ssrMiddleware 处理
+app.use(loaderMiddleware) // 其他请求统一交由 loaderMiddleware 处理，经过处理后将请求转由 ssrMiddleware 处理
 
 const port = 4000
 app.listen(port)
@@ -51,7 +51,7 @@ function loaderMiddleware(req, res) {
  * @param {Response} res 
  */
 function ssrMiddleware(req = {}, res) {
-  let { query, params } = req
+  let { query = {}, params } = req
 
   let templateName = (params && params[0]) || 'template'
   let file = path.join(__dirname, 'dist', `${templateName}.html`)
@@ -59,7 +59,7 @@ function ssrMiddleware(req = {}, res) {
   fs.readFile(file, 'utf8', (err, data) => {
     if (err) res.send(err)
 
-    render(query.r, data)
+    render(data, { query: { route: query.r }})
       .then( (result = {} ) => {
         let { code, html, redirectLocation = {} } = result
         if (code) {
@@ -74,17 +74,3 @@ function ssrMiddleware(req = {}, res) {
   })
 
 }
-
-/* function apiMiddleware(req, res) {
-
-  const data = ['FJ', 'XM', 'SM']
-  
-  let { query = {} } = req
-  
-  let { index = 0 } = query
-  
-  setTimeout(() => {
-    res.status(200).json(data.slice(index))
-  }, 500)
-
-} */

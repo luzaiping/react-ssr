@@ -8,33 +8,40 @@ import configureStore from 'app/store/configureStore'
 
 /**
  * @param {String} template 模板文件的内容
- * @param {Object} model 渲染组件所需的初始数据
+ * @param {Object} model 包含匹配的路由、渲染组件所需的初始数据
  * @param {String} messages 国际化数据
- * @param {String} route 浏览器端路由匹配地址
  * @returns {Promise} 返回路由匹配结果的promise
  */
-export function render(route = '/', template, model, messages) {
-  const memoryHistory = createMemoryHistory(`/${route}`)
+export function render(template, model, messages) {
+
+  let { query = {} } = model
+  let location = query.route
+
+  const memoryHistory = createMemoryHistory(`/${location}`)
 
   // 构建创始的 redux store
   let store = configureStore(memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
-  
+
   return new Promise((resolve, reject) => {
     /* react router match history */
     // match({ history, routes, location: req.url },
-    match({ history, routes, location: route }, (err, redirectLocation, renderProps) => {
+    match({ history, routes, location }, (err, redirectLocation, renderProps) => {
 
       if (err) {
+        console.log('============= match 500 ===================')
         err.code = 500
         reject(err)
       } else if (redirectLocation) {
+        console.log('============= match 302 ===================')
         resolve({ code: 302, redirectLocation })
       } else if (renderProps) {
+        console.log('============= handleRouter ===================')
         // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
         resolve(handleRouter(template, renderProps, store, history))
       } else {
-        let error = new Error(`route: ${route} can not match any page!`)
+        console.log('============= match 400 ===================')
+        let error = new Error(`route: ${location} can not match any page!`)
         error.code = 400
         reject(error)
       }
@@ -54,6 +61,7 @@ function handleRouter(template, renderProps, store, history) {
 
   return fetchData()
     .then( () => {
+      console.log('============= fetch Data success ===================')
       // 这边的 store 已经包含了初始数据
       let preloadedState = store.getState()
 
@@ -76,6 +84,7 @@ function handleRouter(template, renderProps, store, history) {
       return { html }
     })
     .catch(function (error) {
+      console.error('============= fetch data error ===================', error)
       return Promise.reject(error)
     })
 
@@ -95,3 +104,7 @@ function handleRouter(template, renderProps, store, history) {
     })
   }
 }
+
+/* if (process.env.NODE_ENV === 'production') {
+  global.render = render
+} */

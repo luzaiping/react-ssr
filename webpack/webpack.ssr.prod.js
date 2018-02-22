@@ -1,18 +1,18 @@
 const path = require('path')
-const nodeExternals = require('webpack-node-externals')
+const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const UglifyJSPlugin  = require('uglifyjs-webpack-plugin')
 const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
-  name: 'server',
-  entry: ['babel-polyfill', './server/index.js'],
+  entry: ['babel-polyfill', './server/ssr.js'],
   output: {
     path: assetsPath,
     filename: 'ssr.js',
-    libraryTarget: 'commonjs2'
+    publicPath: '/',
+    libraryTarget: 'umd'
   },
   target: 'node',
-  externals: nodeExternals(),  
   module: {
     rules: commonLoaders.concat([
       {
@@ -31,9 +31,13 @@ module.exports = {
     ])
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {NODE_ENV: JSON.stringify('production')}
+    }),
     new CopyWebpackPlugin([
       {from: path.join(baseDirName, 'template'), to: path.join(baseDirName, 'dist')}
-    ])
+    ]),
+    new UglifyJSPlugin()
   ],
   resolve
 }

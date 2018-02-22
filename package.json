@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:server": "webpack --config ./webpack/webpack.server.js",
-    "prod": "webpack --config ./webpack/webpack.client.prod.js &&set NODE_ENV=production&& npm start",
-    "start": "npm run build:server && node server.js"
+    "build:java": "webpack --config ./webpack/webpack.ssr.prod.js",
+    "build:node": "webpack --config ./webpack/webpack.ssr.dev.js",
+    "build:app":  "webpack --config ./webpack/webpack.app.prod.js",
+    "java:prod": "npm run build:app && npm run build:java",
+    "node:prod": "set NODE_ENV=production&& npm run build:app && npm run node:dev",
+    "node:dev": "npm run build:node && node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +34,7 @@
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-logger": "^3.0.6",
     "style-loader": "^0.20.1",
+    "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-node-externals": "^1.6.0"

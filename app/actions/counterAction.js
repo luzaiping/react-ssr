@@ -6,7 +6,7 @@ import { request } from '../service/baseService'
 const increment = createAction(INCREMENT)
 const decrement = createAction(DECREMENT)
 const getDataRequest = createAction(GET_DATA.REQUEST, PAYLOAD)
-const getDataSUCCESS = createAction(GET_DATA.SUCCESS, PAYLOAD)
+const getDataSuccess = createAction(GET_DATA.SUCCESS, PAYLOAD)
 // const getData = createAction(GET_DATA.REQUEST, PAYLOAD)
 
 const getData = function (params = {}) {
@@ -16,7 +16,12 @@ const getData = function (params = {}) {
 
     return request('http://192.168.85.22:8081/items')
       .then( response => {
-        dispatch(getDataSUCCESS(response))
+        console.log('get data success:', response)
+        dispatch(getDataSuccess(response))
+        console.log('dispatch getDataSuccess')
+      })
+      .catch( err => {
+        console.log('get data error:', err)
       })
   }
 }
