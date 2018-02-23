@@ -1,5 +1,7 @@
+@import "../styles/css/themes/default.css";
+
 .wrapper {
-  color: brown;
+  color: $blue-primary;
 }
 
 .btnWrapper {

@@ -17,13 +17,18 @@ module.exports = {
         include: path.resolve(baseDirName, 'app'),
         exclude: path.resolve(baseDirName, 'node_modules'),
         use: [
-          'style-loader',
+          { 
+            loader: 'style-loader'
+          },
           {
             loader: 'css-loader',
             options: {
               modules: true,
               localIdentName: '[name]__[local]___[hash:base64:5]'
             }
+          },
+          {
+            loader: 'postcss-loader'
           }
         ]
       }

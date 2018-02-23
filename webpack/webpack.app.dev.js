@@ -16,14 +16,19 @@ module.exports = {
         include: path.resolve(baseDirName, 'app'),
         exclude: path.resolve(baseDirName, 'node_modules'),
         use: [
-          'style-loader',
+          { 
+            loader: 'style-loader'
+          },
           {
             loader: 'css-loader',
             options: {
               modules: true,
-              // importLoaders: 1,
+              importLoaders: 1, // configure how many loaders before css-loader should be applied to @imported resources. so PostCSS to git @import statements first
               localIdentName: '[name]__[local]___[hash:base64:5]'
             }
+          },
+          {
+            loader: 'postcss-loader'
           }
         ]
       }

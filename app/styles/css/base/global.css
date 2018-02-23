@@ -1,0 +1,48 @@
+
+@import "../themes/default.css";
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  height: 100%;
+}
+*, *:before, *:after {
+box-sizing: inherit;
+}
+body, h1, h2, h3, p, div, ol, ul, li, input, button,image,table,th,td,dl,dd,dt{
+   margin: 0px;
+   padding: 0px;
+}
+body {
+   font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+   font-size: $font14;
+   line-height: 1.5;
+   color: $text-primary-color!important;
+   background: $body-background;
+}
+
+body *::-webkit-scrollbar {
+   width: 5px;
+   height: 5px;
+   display: block;
+   background-color: transparent;
+}
+
+body *::-webkit-scrollbar-thumb {
+   background-color: #bec8d0;
+}
+body *::-webkit-scrollbar, body *::-webkit-scrollbar-thumb {
+   overflow: visible;
+   /*border: 1px solid #a6a6a6;*/
+   -webkit-bordesr-radius: 4px;
+   -moz-border-radius: 4px;
+   -ms-border-radius: 4px;
+   -o-border-radius: 4px;
+   border-radius: 4px;
+}
+body *::-webkit-scrollbar-button {
+   height: 0;
+   width: 0;
+   display: block;
+   background-color: transparent;
+}

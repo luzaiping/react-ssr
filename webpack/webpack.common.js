@@ -1,4 +1,8 @@
 const path = require('path')
+const precss = require('precss')
+const postcssModulesValue = require('postcss-modules-values')
+const postcssUtilities = require('postcss-utilities')
+const autoprefixer = require('autoprefixer')
 
 let baseDirName = path.resolve(__dirname, '../')
 
