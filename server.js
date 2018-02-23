@@ -57,8 +57,10 @@ function ssrMiddleware(req = {}, res) {
   let file = path.join(__dirname, 'dist', `${templateName}.html`)
   
   fs.readFile(file, 'utf8', (err, data) => {
-    if (err) res.send(err)
-
+    if (err) {
+      res.send(err)
+      return
+    }
     render(data, { query: { route: query.r }})
       .then( (result = {} ) => {
         let { code, html, redirectLocation = {} } = result

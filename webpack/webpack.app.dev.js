@@ -1,5 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const merge = require('webpack-merge')
 const { commonConfig, baseDirName } = require('./webpack.common')
 
@@ -9,10 +11,10 @@ module.exports =  merge.smartStrategy(
   }
 )(commonConfig, {
   devtool: 'cheap-module-eval-source-map',
-  entry: { bundle: './app/index.js' },
+  entry: { app: './app/index.js' },
   output: {
     path: path.resolve(baseDirName, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[hash].js',
     publicPath: '/'
   },
   module: {
@@ -21,28 +23,38 @@ module.exports =  merge.smartStrategy(
         test: /\.css$/,
         include: path.resolve(baseDirName, 'app'),
         exclude: path.resolve(baseDirName, 'node_modules'),
-        use: [
-          { 
-            loader: 'style-loader'
-          },
+        use: ExtractTextPlugin.extract(
           {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              importLoaders: 1, // configure how many loaders before css-loader should be applied to @imported resources. so PostCSS to git @import statements first
-              localIdentName: '[name]__[local]___[hash:base64:5]'
-            }
-          },
-          {
-            loader: 'postcss-loader'
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: true,
+                  importLoaders: 1,
+                  localIdentName: '[name]__[local]___[hash:base64:5]'
+                }
+              },
+              {
+                loader: 'postcss-loader'
+              }
+            ]
           }
-        ]
+        )
       }
     ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { CLIENT: true }
+    }),
+    new HtmlWebpackPlugin({
+      title: 'SSR Demo',
+      filename: 'template.html',
+      template: path.resolve(__dirname, 'template.html')
+    }),
+    new ExtractTextPlugin({
+      filename: 'app.[hash].css'
     })
   ]
 })
