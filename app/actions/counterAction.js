@@ -9,7 +9,7 @@ const getDataRequest = createAction(GET_DATA.REQUEST, PAYLOAD)
 const getDataSuccess = createAction(GET_DATA.SUCCESS, PAYLOAD)
 // const getData = createAction(GET_DATA.REQUEST, PAYLOAD)
 
-const getData = function (params = {}) {
+const getData = function (/* params = {} */) {
 
   return dispatch => {
     dispatch(getDataRequest()) // 触发异步请求的action

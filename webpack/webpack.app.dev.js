@@ -1,17 +1,22 @@
 const path = require('path')
 const webpack = require('webpack')
-const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
+const merge = require('webpack-merge')
+const { commonConfig, baseDirName } = require('./webpack.common')
 
-module.exports = {
+module.exports =  merge.smartStrategy(
+  {
+    'module.rules': 'append'
+  }
+)(commonConfig, {
   devtool: 'cheap-module-eval-source-map',
-  entry: ['babel-polyfill', './app/index.js'],
+  entry: { bundle: './app/index.js' },
   output: {
-    path: assetsPath,
+    path: path.resolve(baseDirName, 'dist'),
     filename: 'bundle.js',
     publicPath: '/'
   },
   module: {
-    rules: commonLoaders.concat([
+    rules: [
       {
         test: /\.css$/,
         include: path.resolve(baseDirName, 'app'),
@@ -33,12 +38,11 @@ module.exports = {
           }
         ]
       }
-    ])
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { CLIENT: true }
     })
-  ],
-  resolve
-}
+  ]
+})

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build:app": "webpack --config ./webpack/webpack.app.prod.js",
-    "java:prod": "npm run build:app && webpack --config ./webpack/webpack.ssr.prod.js",
-    "node:prod": "set NODE_ENV=production&& npm run build:app && npm run node:dev",
-    "node:dev": "webpack --config ./webpack/webpack.ssr.dev.js && node server.js"
+    "build:javaProd": "npm run build:app && webpack --config ./webpack/webpack.ssr.prod.js",
+    "prod": "set NODE_ENV=production&& npm run build:app && npm start",
+    "start": "webpack --config ./webpack/webpack.ssr.dev.js && node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "eslint-config-rackt": "^1.1.1",
     "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "^7.6.1",
+    "file-loader": "^1.1.9",
     "isomorphic-fetch": "^2.2.1",
     "postcss": "^6.0.19",
     "postcss-import": "^11.1.0",
@@ -36,8 +37,10 @@
     "redux-logger": "^3.0.6",
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.1.8",
+    "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^2.0.4",
+    "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {

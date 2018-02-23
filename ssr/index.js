@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
@@ -6,13 +7,14 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import routes from 'app/routes'
 import configureStore from 'app/store/configureStore'
 
+
 /**
  * @param {String} template 模板文件的内容
  * @param {Object} model 包含匹配的路由、渲染组件所需的初始数据
  * @param {String} messages 国际化数据
  * @returns {Promise} 返回路由匹配结果的promise
  */
-export function render(template, model, messages) {
+export function render(template, model/* , messages */) {
 
   let { query = {} } = model
   let location = query.route

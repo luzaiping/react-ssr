@@ -1,44 +1,64 @@
 const path = require('path')
-const precss = require('precss')
-const postcssModulesValue = require('postcss-modules-values')
-const postcssUtilities = require('postcss-utilities')
-const autoprefixer = require('autoprefixer')
-
 let baseDirName = path.resolve(__dirname, '../')
 
-module.exports = {
-  baseDirName,
-  assetsPath: path.resolve(baseDirName, 'dist'),
-  commonLoaders: [
-    {
-      test: /\.(js|jsx)$/,
-      loader: 'eslint-loader',
-      include: [
-        path.join(baseDirName, 'app'),
-        path.join(baseDirName, 'server')
-      ],
-      exclude: [
-        /node_modules/
-      ],
-      query: {
-        emitWarning: true
+const commonConfig = {
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        query: {
+          emitWarning: true
+        },
+        enforce: 'pre'
       },
-      enforce: 'pre'
-    },
-    {
-      test: /\.(js|jsx)$/,
-      use: {
-        loader: 'babel-loader'
+      {
+        test: /\.(js|jsx)$/,
+        use: {
+          loader: 'babel-loader'
+        },
+        exclude: /node_modules/
       },
-      exclude: path.resolve(baseDirName, 'node_modules')
-    }
-  ],
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: 'images/[hash].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|[ot]tf|eot|svg)(\?t=[0-9]+(#\w+)?)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 51200,
+              name: 'fonts/[hash].[ext]'
+            }
+          }
+        ]
+      }
+    ]
+  },
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
       app: path.resolve(baseDirName, 'app'),
       constants: path.resolve(baseDirName, 'app/constants'),
-      utils: path.resolve(baseDirName, 'app/utils')
+      utils: path.resolve(baseDirName, 'app/utils'),
+      css: path.resolve(baseDirName, 'styles/css'),
+      fonts: path.resolve(baseDirName, 'styles/fonts')
     }
   }
+}
+
+module.exports = {
+  commonConfig,
+  baseDirName
 }
