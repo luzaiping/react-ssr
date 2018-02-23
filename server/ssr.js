@@ -36,7 +36,7 @@ export function render(template, model, messages) {
         console.log('============= match 302 ===================')
         resolve({ code: 302, redirectLocation })
       } else if (renderProps) {
-        console.log('============= handleRouter ===================')
+        console.log(`============= matched route: ${location}, start to handle router ===================`)
         // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
         resolve(handleRouter(template, renderProps, store, history))
       } else {
@@ -105,6 +105,6 @@ function handleRouter(template, renderProps, store, history) {
   }
 }
 
-/* if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   global.render = render
-} */
+}

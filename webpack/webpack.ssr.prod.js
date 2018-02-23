@@ -9,8 +9,7 @@ module.exports = {
   output: {
     path: assetsPath,
     filename: 'ssr.js',
-    publicPath: '/',
-    libraryTarget: 'umd'
+    libraryTarget: 'commonjs2'
   },
   target: 'node',
   module: {
