@@ -16,12 +16,10 @@ const getData = function (params = {}) {
 
     return request('http://192.168.85.22:8081/items')
       .then( response => {
-        console.log('get data success:', response)
         dispatch(getDataSuccess(response))
-        console.log('dispatch getDataSuccess')
       })
       .catch( err => {
-        console.log('get data error:', err)
+        console.error('get data error:', err)
       })
   }
 }

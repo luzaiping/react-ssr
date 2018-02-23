@@ -36,7 +36,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': {NODE_ENV: JSON.stringify('production')}
+      'process.env': { NODE_ENV: JSON.stringify('production'), CLIENT: true }
     }),
     new UglifyJSPlugin({  // 支持 tree shaking，使得没用到的代码不会被包含到bundle里
       // sourceMap: true

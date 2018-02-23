@@ -29,18 +29,16 @@ export function render(template, model, messages) {
     match({ history, routes, location }, (err, redirectLocation, renderProps) => {
 
       if (err) {
-        console.log('============= match 500 ===================')
+        console.error('============= match 500 ===================')
         err.code = 500
         reject(err)
       } else if (redirectLocation) {
-        console.log('============= match 302 ===================')
         resolve({ code: 302, redirectLocation })
       } else if (renderProps) {
-        console.log(`============= matched route: ${location}, start to handle router ===================`)
         // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
         resolve(handleRouter(template, renderProps, store, history))
       } else {
-        console.log('============= match 400 ===================')
+        console.error('============= match 400 ===================')
         let error = new Error(`route: ${location} can not match any page!`)
         error.code = 400
         reject(error)
@@ -61,7 +59,6 @@ function handleRouter(template, renderProps, store, history) {
 
   return fetchData()
     .then( () => {
-      console.log('============= fetch Data success ===================')
       // 这边的 store 已经包含了初始数据
       let preloadedState = store.getState()
 

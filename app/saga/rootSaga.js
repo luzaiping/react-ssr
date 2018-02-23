@@ -20,7 +20,6 @@ export const runSaga = () => {
 export function* getData() {
   try {
     let payload = yield call([ userService, userService.getData ])
-    console.log('=============== finish fetching response data =============')
     yield put({ type: GET_DATA.SUCCESS, payload })
   } catch(error) {
     yield put({ type: GET_DATA.FAILURE, error })

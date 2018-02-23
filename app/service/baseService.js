@@ -12,14 +12,10 @@ export function request(url) {
     headers
   }
   
-  console.log('============= baseService:' + url)
-  
   return fetch(url, setting)
     .then(response => {
-      console.log('============= get response ============')
       let json = response.json()
       return json.then(json => {
-        console.log('============= response ============', json)
         return { json, response }
       }).then(({ json, response }) => {
         return response.ok ? json : Promise.reject({...json, statusCode: response.status})
@@ -32,7 +28,7 @@ export function request(url) {
       })
     })
     .catch(e => { // 处理所有fetch请求发送失败的异常，比如无网络连接
-      console.log('============= fetch error ===== ', e)
+      console.error('============= fetch error ===== ', e)
       return Promise.reject(e)
     })
 }

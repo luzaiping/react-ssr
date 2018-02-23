@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const { baseDirName, assetsPath, commonLoaders, resolve } = require('./webpack.common')
 
 module.exports = {
@@ -34,5 +35,10 @@ module.exports = {
       }
     ])
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': { CLIENT: true }
+    })
+  ],
   resolve
 }
