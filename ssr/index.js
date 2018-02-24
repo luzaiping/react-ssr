@@ -40,9 +40,9 @@ export function render(template, model/* , messages */) {
         // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
         resolve(handleRouter(template, renderProps, store, history))
       } else {
-        console.error('============= match 400 ===================')
+        console.error('============= match 404 ===================')
         let error = new Error(`route: ${location} can not match any page!`)
-        error.code = 400
+        error.code = 404
         reject(error)
       }
     })

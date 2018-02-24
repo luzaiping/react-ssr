@@ -26,7 +26,8 @@ if (isProduction) {
   const compiler = webpack(webpackConfig)
   app.use(devMiddleware(compiler, {
     noInfo: true,
-    publicPath: webpackConfig.output.publicPath
+    publicPath: webpackConfig.output.publicPath,
+    serverSideRender: true
   }))
 }
 
@@ -52,8 +53,10 @@ function loaderMiddleware(req, res) {
  */
 function ssrMiddleware(req = {}, res) {
   let { query = {}, params } = req
+  const assetsByChunkName = json.assetsByChunkName
+  console.log('=========== assetsByChunkName ===========', assetsByChunkName)
 
-  let templateName = (params && params[0]) || 'template'
+  /* let templateName = (params && params[0]) || 'template'
   let file = path.join(__dirname, 'dist', `${templateName}.html`)
   
   fs.readFile(file, 'utf8', (err, data) => {
@@ -73,6 +76,6 @@ function ssrMiddleware(req = {}, res) {
       .catch( (code, message) => {
         res.status(code).send(message)
       })
-  })
+  }) */
 
 }
