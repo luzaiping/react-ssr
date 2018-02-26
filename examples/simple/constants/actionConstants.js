@@ -1,5 +1,5 @@
 
-import { createAsyncActionType } from 'utils/actionUtils'
+import { createAsyncActionType } from '../utils/actionUtils'
 
 export const PAYLOAD = 'payload'
 export const INCREMENT = 'INCREMENT'

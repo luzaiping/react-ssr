@@ -3,7 +3,6 @@ import reduxThunk from 'redux-thunk'
 import reduxLogger from 'redux-logger'
 import { routerMiddleware } from 'react-router-redux'
 // import { sagaMiddleware } from '../saga/rootSaga'
-import rootReducer from '../reducer'
 
 function createEnhancer(history) {
   let enhancer
@@ -25,7 +24,7 @@ function createEnhancer(history) {
 }
 
 
-export default function configureStore(history, preloadedState) {
+export default function configureStore(rootReducer, history, preloadedState) {
 
   const store = createStore(rootReducer, preloadedState, createEnhancer(history))
 

@@ -13,7 +13,6 @@ const render = require('./dist/ssr.js').render
 const isProduction = process.env.NODE_ENV === 'production'
 let template
 
-
 const app = express()
 
 app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico'))) // 处理 /favicon.ico 请求

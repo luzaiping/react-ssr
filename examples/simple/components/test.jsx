@@ -5,7 +5,7 @@ export default class Test extends Component {
   render() {
     return (
       <div>
-        <div>test !!!!!!!!!</div>
+        <div>这是个测试页面</div>
       </div>
     )
   }

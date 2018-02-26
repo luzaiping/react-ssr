@@ -1,7 +1,5 @@
-const path = require('path')
-let baseDirName = path.resolve(__dirname, '../')
 
-const commonConfig = {
+module.exports = {
   module: {
     rules: [
       {
@@ -47,18 +45,13 @@ const commonConfig = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
-    alias: {
-      app: path.resolve(baseDirName, 'app'),
-      constants: path.resolve(baseDirName, 'app/constants'),
-      utils: path.resolve(baseDirName, 'app/utils'),
-      css: path.resolve(baseDirName, 'styles/css'),
-      fonts: path.resolve(baseDirName, 'styles/fonts')
-    }
+    extensions: ['.js', '.jsx']
+    // alias: {
+    //   app: path.resolve(baseDirName, 'app'),
+    //   constants: path.resolve(baseDirName, 'app/constants'),
+    //   utils: path.resolve(baseDirName, 'app/utils'),
+    //   css: path.resolve(baseDirName, 'styles/css'),
+    //   fonts: path.resolve(baseDirName, 'styles/fonts')
+    // }
   }
-}
-
-module.exports = {
-  commonConfig,
-  baseDirName
 }

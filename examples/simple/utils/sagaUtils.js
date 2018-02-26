@@ -1,4 +1,4 @@
-import { PAYLOAD } from 'constants/actionConstants'
+import { PAYLOAD } from '../constants/actionConstants'
 
 /**
  * 提取action.payload

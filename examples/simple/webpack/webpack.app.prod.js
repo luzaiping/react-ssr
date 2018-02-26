@@ -12,7 +12,7 @@ let config = merge.smartStrategy(
 )(devConfig, {
   devtool: false,
   entry: { 
-    app: './app/index.js',
+    app: '../index.js',
     vendors: ['react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux', 'redux-thunk']
   },
   output: {

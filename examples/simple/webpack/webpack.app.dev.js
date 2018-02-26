@@ -3,15 +3,16 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const merge = require('webpack-merge')
-const { commonConfig, baseDirName } = require('./webpack.common')
+let baseDirName = path.resolve(__dirname, '../')
+const commonConfig = require('../../../webpack/webpack.common')
 
-module.exports =  merge.smartStrategy(
+module.exports = merge.smartStrategy(
   {
     'module.rules': 'append'
   }
 )(commonConfig, {
   devtool: 'cheap-module-eval-source-map',
-  entry: './app/index.js',
+  entry: '../index.js',
   output: {
     path: path.resolve(baseDirName, 'dist'),
     filename: '[name].[hash].js',
@@ -21,7 +22,6 @@ module.exports =  merge.smartStrategy(
     rules: [
       {
         test: /\.css$/,
-        include: path.resolve(baseDirName, 'app'),
         exclude: path.resolve(baseDirName, 'node_modules'),
         use: ExtractTextPlugin.extract(
           {
@@ -55,7 +55,7 @@ module.exports =  merge.smartStrategy(
       chunksSortMode: 'dependency'
     }),
     new ExtractTextPlugin({
-      filename: 'app.[hash].css'
+      filename: '[name].[hash].css'
     })
   ]
 })

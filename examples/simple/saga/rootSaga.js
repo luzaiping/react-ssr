@@ -1,8 +1,8 @@
 
 import createSagaMiddleware, { takeEvery } from 'redux-saga'
-import { GET_DATA } from 'constants/actionConstants'
-import { mapPayload } from 'utils/sagaUtils'
 import { put, call } from 'redux-saga/effects'
+import { GET_DATA } from '../constants/actionConstants'
+import { mapPayload } from '../utils/sagaUtils'
 import userService from '../service/userService'
 
 export default function* rootSaga() {

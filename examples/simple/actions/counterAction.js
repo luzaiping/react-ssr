@@ -1,6 +1,6 @@
 
-import { INCREMENT, DECREMENT, GET_DATA, PAYLOAD } from 'constants/actionConstants'
-import { createAction } from 'utils/actionUtils'
+import { INCREMENT, DECREMENT, GET_DATA, PAYLOAD } from '../constants/actionConstants'
+import { createAction } from '../utils/actionUtils'
 import { request } from '../service/baseService'
 
 const increment = createAction(INCREMENT)

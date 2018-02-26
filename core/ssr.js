@@ -4,9 +4,9 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { match, RouterContext, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import routes from 'app/routes'
-import configureStore from 'app/store/configureStore'
+import configureStore from './store/configureStore'
 
+import { routes, rootReducer } from '../demo/basic'
 
 /**
  * @param {String} template 模板文件的内容
@@ -22,7 +22,7 @@ export function render(template, model/* , messages */) {
   const memoryHistory = createMemoryHistory(`/${location}`)
 
   // 构建创始的 redux store
-  let store = configureStore(memoryHistory)
+  let store = configureStore(rootReducer, memoryHistory)
   const history = syncHistoryWithStore(memoryHistory, store)
 
   return new Promise((resolve, reject) => {
@@ -64,8 +64,8 @@ function handleRouter(template, renderProps, store, history) {
       // 这边的 store 已经包含了初始数据
       let preloadedState = store.getState()
 
-      // 基于 preloadedState 更新 store，下面这句是否需要
-      store = configureStore(history, preloadedState)
+      // TODO 基于 preloadedState 更新 store，下面这句是否需要？
+      store = configureStore(rootReducer, history, preloadedState)
 
       // renderToString 生成匹配路由组件的 html 内容
       // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
