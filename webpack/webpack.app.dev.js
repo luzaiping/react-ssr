@@ -11,7 +11,7 @@ module.exports =  merge.smartStrategy(
   }
 )(commonConfig, {
   devtool: 'cheap-module-eval-source-map',
-  entry: { app: './app/index.js' },
+  entry: './app/index.js',
   output: {
     path: path.resolve(baseDirName, 'dist'),
     filename: '[name].[hash].js',
@@ -50,8 +50,9 @@ module.exports =  merge.smartStrategy(
     }),
     new HtmlWebpackPlugin({
       title: 'SSR Demo',
-      filename: 'template.html',
-      template: path.resolve(__dirname, 'template.html')
+      filename: 'template.html', // 路径是 output.path (采用 webpack-dev-middleware 运行该 config，所有 assets 都不会写到磁盘里)
+      template: path.resolve(__dirname, 'template.html'),
+      chunksSortMode: 'dependency'
     }),
     new ExtractTextPlugin({
       filename: 'app.[hash].css'

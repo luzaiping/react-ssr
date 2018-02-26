@@ -8,10 +8,11 @@ const devMiddleware = require('webpack-dev-middleware')
 const favicon = require('serve-favicon')
 const path = require('path')
 const fs = require('fs')
-
 const render = require('./dist/ssr.js').render
 
 const isProduction = process.env.NODE_ENV === 'production'
+let template
+
 
 const app = express()
 
@@ -25,7 +26,6 @@ if (isProduction) {
   const webpackConfig = require('./webpack/webpack.app.dev.js')
   const compiler = webpack(webpackConfig)
   app.use(devMiddleware(compiler, {
-    noInfo: true,
     publicPath: webpackConfig.output.publicPath,
     serverSideRender: true
   }))
@@ -47,24 +47,17 @@ function loaderMiddleware(req, res) {
 }
 
 /**
- * 
- * @param {Request} req 
- * @param {Response} res 
+ *
+ * @param {Request} req
+ * @param {Response} res
  */
 function ssrMiddleware(req = {}, res) {
   let { query = {}, params } = req
-  const assetsByChunkName = json.assetsByChunkName
-  console.log('=========== assetsByChunkName ===========', assetsByChunkName)
 
-  /* let templateName = (params && params[0]) || 'template'
-  let file = path.join(__dirname, 'dist', `${templateName}.html`)
-  
-  fs.readFile(file, 'utf8', (err, data) => {
-    if (err) {
-      res.send(err)
-      return
-    }
-    render(data, { query: { route: query.r }})
+  try {
+    template = template || getTemplate()
+
+    render(template, { query: { route: query.r }})
       .then( (result = {} ) => {
         let { code, html, redirectLocation = {} } = result
         if (code) {
@@ -76,6 +69,55 @@ function ssrMiddleware(req = {}, res) {
       .catch( (code, message) => {
         res.status(code).send(message)
       })
-  }) */
+
+  } catch (err) {
+    res.send(err)
+    return
+  }
+
+
+  function getTemplate() {
+    let templateName = (params && params[0]) || 'template'
+    let templateDir = isProduction ? 'dist' : 'webpack'
+    let file = path.join(__dirname, templateDir, `${templateName}.html`)
+
+    // 模板内容不存在，则读取对应模板文件
+    let templateContent = fs.readFileSync(file, 'utf8')
+    return isProduction ? templateContent : dynamicTemplate()
+
+    // 如果使用 html-webpack-plugin 生成模板文件，并且使用 webpack-dev-middleware (或 webpack-dev-server)
+    // 则需要手动将构建好的 css 和 js 添加到 template 里，而且 js assets 的添加顺序要遵循依赖关系，否则会导致脚本执行有误
+    function dynamicTemplate() {
+      let statsJson = res.locals.webpackStats.toJson()
+
+      let sortChunks =  require('html-webpack-plugin/lib/chunksorter.js').dependency
+      const sortedChunks = sortChunks(statsJson.chunks) // 已经排好关联关系的 chunks
+
+      let assets = [] // 用于存放所有 assets
+
+      for (let chunk of sortedChunks) {
+        assets = assets.concat(chunk.files || [])
+      }
+
+      let linkContent = assets.filter(path => path.endsWith('.css')).map(path => `<link rel="stylesheet" href="${path}" />`).join('\n')
+      let scriptContent = assets.filter(path => path.endsWith('.js')).map(path => `<script src="${path}"></script>`).join('\n')
+
+      return appendHtml()
+
+      // 丑到爆的实现方式
+      function appendHtml() {
+        let headIndex = templateContent.indexOf('</head>')
+        let bodyIndex = templateContent.indexOf('</body>')
+
+        let headContent = templateContent.substring(0, headIndex)
+        let bodyContent = templateContent.substring(headIndex + 7, bodyIndex)
+        let endContent = templateContent.substring(bodyIndex)
+
+        return `${headContent}${linkContent}${bodyContent}${scriptContent}${endContent}`
+      }
+    }
+
+  }
 
 }
+

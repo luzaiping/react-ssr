@@ -6,16 +6,24 @@ const devConfig = require('./webpack.app.dev')
 
 let config = merge.smartStrategy(
   {
-    'devtool': 'replace'
+    devtool: 'replace',
+    entry: 'replace'
   }
 )(devConfig, {
   devtool: false,
+  entry: { 
+    app: './app/index.js',
+    vendors: ['react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux', 'redux-thunk']
+  },
   output: {
     filename: '[name].[chunkhash].js'
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: JSON.stringify('production'), CLIENT: true }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: [ 'vendors' ]
     }),
     new UglifyJSPlugin()
   ]
