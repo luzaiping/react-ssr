@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const merge = require('webpack-merge')
 let baseDirName = path.resolve(__dirname, '../')
 const commonConfig = require('../webpack/webpack.common')
+const { title } = require('../config')
 
 module.exports = merge.smartStrategy(
   {
@@ -49,7 +50,7 @@ module.exports = merge.smartStrategy(
       'process.env': { CLIENT: true }
     }),
     new HtmlWebpackPlugin({
-      title: 'SSR Demo',
+      title,
       filename: 'template.html',
       template: path.resolve(__dirname, 'template.html'),
       chunksSortMode: 'dependency'

@@ -111,7 +111,11 @@ function ssrMiddleware(req = {}, res) {
         let bodyContent = templateContent.substring(headIndex + 7, bodyIndex)
         let endContent = templateContent.substring(bodyIndex)
 
-        return `${headContent}${linkContent}${bodyContent}${scriptContent}${endContent}`
+        let html = `${headContent}${linkContent}${bodyContent}${scriptContent}${endContent}`
+
+        let { title } = require('./config')
+
+        return html.replace('<%= htmlWebpackPlugin.options.title %>', title)
       }
     }
 
