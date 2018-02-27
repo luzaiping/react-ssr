@@ -1,9 +1,9 @@
 @import "../styles/css/themes/default.css";
-@value icon: "../styles/css/base/icon.css";
+/* @value icon: "../styles/css/base/icon.css"; */
 
 .wrapper {
-  composes: iconfont from icon;
-  composes: icon-arrow-double from icon;
+  /* composes: iconfont from icon;
+  composes: icon-arrow-double from icon; */
   color: $blue-primary;
 }
 
