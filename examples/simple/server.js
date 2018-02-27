@@ -8,7 +8,7 @@ const devMiddleware = require('webpack-dev-middleware')
 const favicon = require('serve-favicon')
 const path = require('path')
 const fs = require('fs')
-const render = require('./dist/ssr.js').render
+const render = require('./dist/ssr.js')
 
 const isProduction = process.env.NODE_ENV === 'production'
 let template
@@ -73,7 +73,6 @@ function ssrMiddleware(req = {}, res) {
     res.send(err)
     return
   }
-
 
   function getTemplate() {
     let templateName = (params && params[0]) || 'template'

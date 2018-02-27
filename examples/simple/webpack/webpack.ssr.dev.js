@@ -1,15 +1,28 @@
 const path = require('path')
+const fs = require('fs')
 const nodeExternals = require('webpack-node-externals')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const merge = require('webpack-merge')
-const { commonConfig, baseDirName } = require('./webpack.common')
+const commonConfig = require('../webpack/webpack.common')
+let baseDirName = path.resolve(__dirname, '../')
+
+function generateLoaderFile() {
+  const getLoaderHtml = require('../../../ssr-core/lib/loader')
+  const config = require('../config')
+  const html = getLoaderHtml(config)
+  let file = path.resolve(baseDirName, 'dist', 'loader.html')
+  fs.writeFileSync(file, html, 'utf8')
+  console.log('========= generate loader html successfully ===========')
+}
+
+generateLoaderFile()
 
 module.exports = merge.smartStrategy(
   {
     'module.rules': 'append'
   }
 )(commonConfig, {
-  entry: './ssr/index.js',
+  entry: path.resolve(baseDirName, 'entry', 'ssr.js'),
   output: {
     path: path.resolve(baseDirName, 'dist'),
     filename: 'ssr.js',
@@ -21,7 +34,6 @@ module.exports = merge.smartStrategy(
     rules: [
       {
         test: /\.css$/,
-        include: path.resolve(baseDirName, 'app'),
         exclude: path.resolve(baseDirName, 'node_modules'),
         use: [
           {
@@ -41,7 +53,7 @@ module.exports = merge.smartStrategy(
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: path.join(baseDirName, 'template'), to: path.join(baseDirName, 'dist') }
+      { from: path.join(baseDirName, 'assets'), to: path.join(baseDirName, 'dist') }
     ])
   ]
 })

@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import reduxThunk from 'redux-thunk'
-import reduxLogger from 'redux-logger'
+import reduxLogger  from 'redux-logger'
 import { routerMiddleware } from 'react-router-redux'
 // import { sagaMiddleware } from '../saga/rootSaga'
 
 function createEnhancer(history) {
   let enhancer
-
+  
   if (process.env.CLIENT) {
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     enhancer = composeEnhancers(
@@ -19,7 +19,6 @@ function createEnhancer(history) {
       applyMiddleware(reduxThunk, routerMiddleware(history))
     )
   }
-
   return enhancer
 }
 
@@ -27,13 +26,13 @@ function createEnhancer(history) {
 export default function configureStore(rootReducer, history, preloadedState) {
 
   const store = createStore(rootReducer, preloadedState, createEnhancer(history))
-
-  if (module.hot) {
+  
+  /* if (module.hot) {
     module.hot.accept('../reducers', () => {
       const nextRootReducer = require('../reducers')
       store.replaceReducer(nextRootReducer)
     })
-  }
+  } */
   
   return store
 }

@@ -1,3 +1,4 @@
+const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const UglifyJSPlugin  = require('uglifyjs-webpack-plugin')
@@ -12,7 +13,7 @@ let config = merge.smartStrategy(
 )(devConfig, {
   devtool: false,
   entry: { 
-    app: '../index.js',
+    app: path.resolve(__dirname,'../entry', 'app.js'),
     vendors: ['react', 'react-dom', 'react-redux', 'react-router', 'react-router-redux', 'redux', 'redux-thunk']
   },
   output: {

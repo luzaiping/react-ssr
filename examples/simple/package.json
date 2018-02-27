@@ -1,13 +1,14 @@
 {
-  "name": "react-ssr-tut",
+  "name": "ssr-examples-simple",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:ssr": "webpack --config ./webpack/webpack.ssr.prod.js",
     "build:app": "webpack --config ./webpack/webpack.app.prod.js",
-    "build:javaProd": "npm run build:app && webpack --config ./webpack/webpack.ssr.prod.js",
+    "build:javaProd": "npm run build:app && npm run build:ssr",
     "prod": "set NODE_ENV=production&& npm run build:app && npm start",
-    "start": "webpack --config ./webpack/webpack.ssr.dev.js && node server.js"
+    "start": "webpack --config ./webpack/webpack.ssr.dev.js && node ./server.js"
   },
   "author": "",
   "license": "ISC",

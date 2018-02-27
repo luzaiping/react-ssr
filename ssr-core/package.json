@@ -1,0 +1,31 @@
+{
+  "name": "ssr-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.16.0",
+    "eslint-config-rackt": "^1.1.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-react": "^7.6.1",
+    "redux-logger": "^3.0.6"
+  },
+  "dependencies": {
+    "react": "^0.14.6",
+    "react-dom": "^0.14.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^2.3.0",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
+}

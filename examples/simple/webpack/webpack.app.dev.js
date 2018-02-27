@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const merge = require('webpack-merge')
 let baseDirName = path.resolve(__dirname, '../')
-const commonConfig = require('../../../webpack/webpack.common')
+const commonConfig = require('../webpack/webpack.common')
 
 module.exports = merge.smartStrategy(
   {
@@ -12,7 +12,7 @@ module.exports = merge.smartStrategy(
   }
 )(commonConfig, {
   devtool: 'cheap-module-eval-source-map',
-  entry: '../index.js',
+  entry: path.resolve(baseDirName, 'entry', 'app.js'),
   output: {
     path: path.resolve(baseDirName, 'dist'),
     filename: '[name].[hash].js',
@@ -50,7 +50,7 @@ module.exports = merge.smartStrategy(
     }),
     new HtmlWebpackPlugin({
       title: 'SSR Demo',
-      filename: 'template.html', // 路径是 output.path (采用 webpack-dev-middleware 运行该 config，所有 assets 都不会写到磁盘里)
+      filename: 'template.html',
       template: path.resolve(__dirname, 'template.html'),
       chunksSortMode: 'dependency'
     }),
