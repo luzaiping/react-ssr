@@ -1,10 +1,10 @@
 import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { Router, browserHistory/* , hashHistory */ } from 'react-router'
+import { browserHistory/* , hashHistory */ } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from '../common/store/configureStore'
+import Root from './root'
 
 function start({ routes, rootReducer, rootId = 'root' }) {
 
@@ -22,9 +22,7 @@ function start({ routes, rootReducer, rootId = 'root' }) {
   // runSaga()
   
   render(
-    <Provider store={store}>
-      <Router routes={routes} history={history}/>
-    </Provider>,
+    <Root store={store} routes={routes} history={history}/>,
     document.getElementById(rootId)
   )
 }

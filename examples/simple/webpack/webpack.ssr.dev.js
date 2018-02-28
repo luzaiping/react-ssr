@@ -7,7 +7,7 @@ const commonConfig = require('../webpack/webpack.common')
 let baseDirName = path.resolve(__dirname, '../')
 
 function generateLoaderFile() {
-  const getLoaderHtml = require('../../../ssr-core/lib/loader')
+  const getLoaderHtml = require('../../../src/loader')
   const config = require('../config')
   const html = getLoaderHtml(config)
   let file = path.resolve(baseDirName, 'dist', 'loader.html')

@@ -1,4 +1,4 @@
-import { SSR } from '../../../ssr-core/'
+import { SSR } from '../../../src/'
 
 import routes from '../app/routes'
 import rootReducer from '../app/reducer'
