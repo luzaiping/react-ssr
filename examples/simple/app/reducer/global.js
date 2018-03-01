@@ -1,19 +1,12 @@
 import { SET_LOCALE } from '../constants/actionConstants'
 
-export default (state = { locale: '' }, action) => {
+export default (state = { locale: 'zh' }, action) => {
+  switch (action.type) {
   case SET_LOCALE: {
-    let 
+    let { payload = {} } = action
     return {
       ...state,
-      fetching: true
-    }
-  }
-  case GET_DATA.SUCCESS: {
-    let { payload = [] } = action
-    return {
-      fetching: false,
-      count: payload.length,
-      items: payload
+      locale: payload.locale
     }
   }
   default:

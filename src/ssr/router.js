@@ -2,6 +2,8 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { RouterContext } from 'react-router'
+import defaultConfig from '../config/config'
+import Root from '../app/Root'
 
 /**
  * 路由匹配的处理：
@@ -10,12 +12,13 @@ import { RouterContext } from 'react-router'
  * @param {*} renderProps
  * @returns {Promise} 路由处理的结果，封装成Promise对象
  */
-export function handleRouter(template, renderProps, store) {
+export function handleRouter(template, renderProps, store, config = {}) {
 
   return fetchData(renderProps, store)
     .then( () => {
       // 这边的 store 已经包含了初始数据
       let preloadedState = store.getState()
+      let composedConfig = { ...defaultConfig, ...config }
 
       // TODO 基于 preloadedState 更新 store，下面这句是否需要？
       //store = configureStore(rootReducer, history, preloadedState)
@@ -24,7 +27,9 @@ export function handleRouter(template, renderProps, store) {
       // RouterContext 需由 Provider 包装起来，这样组件才能获取到 redux store
       const rootContent = renderToString(
         <Provider store={store}>
-          <RouterContext {...renderProps} />
+          <Root i18nConfig={composedConfig.i18n}>
+            <RouterContext {...renderProps} />
+          </Root>
         </Provider>
       )
 

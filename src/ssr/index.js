@@ -4,7 +4,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from '../common/store/configureStore'
 import { handleRouter } from './router'
 
-function start({ routes, rootReducer }) {
+function start({ routes, rootReducer, config = {} }) {
 
   // 将 render 暴露到 global scope 供 j2v8 调用
   // TODO j2v8 研究下是否可以直接调用 export 出去的方法
@@ -44,7 +44,7 @@ function start({ routes, rootReducer }) {
           resolve({ code: 302, redirectLocation })
         } else if (renderProps) {
           // TODO 如果 handleRouter 是返回 Promise.reject，那么这边 通过 resolve 调用，是否合理？
-          resolve(handleRouter(template, renderProps, store, history))
+          resolve(handleRouter(template, renderProps, store, config))
         } else {
           console.error('============= match 404 ===================')
           let error = new Error(`route: ${location} can not match any page!`)

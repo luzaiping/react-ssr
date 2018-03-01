@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react' 
-import { Provider } from 'react-redux'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import {addLocaleData, IntlProvider} from 'react-intl'
 import typeUtils from '../utils/typeUtils'
 
@@ -7,10 +7,10 @@ const DEFAULT_LOCALE = 'zh'
 
 // 进行 polyfill 国际化
 // 动态加载所需的 locale data
-function initIntl(supportedLocales = []) {
+function setupIntl(supportedLocales = []) {
 
   setupPolyfill()
-  dynamicLoadData()
+  loadLocaleData()
 
   function setupPolyfill() {
     let areIntlLocalesSupported = require('intl-locales-supported')
@@ -30,7 +30,7 @@ function initIntl(supportedLocales = []) {
     }
   }
 
-  function dynamicLoadData() {
+  function loadLocaleData() {
     for (let item of supportedLocales) {
       if (!typeUtils.isString(item)) throw new Error('supportedLocales 的元素必须是字符串')
       if (item && item.trim()) {
@@ -41,52 +41,45 @@ function initIntl(supportedLocales = []) {
         // 下所有文件都输出成 chunk。下面这样的实现方式无法满足运行时动态加载文件的需求。
         // import(`react-intl/locale-data/${item}`).then(localeData => {
         //   console.log('localeData:', localeData)
-        //   addLocaleData(localeData) 
+        //   addLocaleData(localeData)
         // })
       }
     }
-    // addLocaleData(zhLocaleData)
-    // addLocaleData(enLocaleData)
     supportedLocales.includes(DEFAULT_LOCALE) && addLocaleData({ locale: 'zh-CN', parentLocale: DEFAULT_LOCALE })
   }
 }
 
-export default class RootProvider extends Component {
+class IntlProviderWrapper extends Component {
 
   constructor(props) {
     super(props)
 
-    let { enableI18n = false, supportedLocales = [] } = props.i18nConfig
-    enableI18n && initIntl(supportedLocales)
+    let { supportedLocales = [] } = props.i18nConfig
+    setupIntl(supportedLocales)
   }
 
   render() {
-    let { store, i18nConfig = {} } = this.props
-    let { enableI18n = false, locale = '', defaultLocale = '', messages = {} } = i18nConfig
-    
-    return enableI18n ? 
-      (
-        <Provider store={store}>
-          <IntlProvider locale={locale || DEFAULT_LOCALE} defaultLocale={defaultLocale || DEFAULT_LOCALE} messages={messages}>
-            { this.props.children }
-          </IntlProvider>
-        </Provider>
-      ) : 
-      (
-        <Provider store={store}>
-          { this.props.children }
-        </Provider>
-      )
+    let { initLocale = '', messages = {} } = this.props.i18nConfig
+    let locale = this.props.locale || initLocale || DEFAULT_LOCALE
+
+    return (
+      <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
+        { this.props.children }
+      </IntlProvider>
+    )
   }
 }
 
-RootProvider.propTypes = {
+IntlProviderWrapper.propTypes = {
+  locale: PropTypes.string,
   i18nConfig: PropTypes.object.isRequired,
-  store: PropTypes.shape({
-    subscribe: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    getState: PropTypes.func.isRequired
-  }).isRequired,
   children: PropTypes.element.isRequired
 }
 
+const mapStateToProps = state => ({
+  locale : state.locale || (state.global && state.global.locale)
+})
+
+const mapDispatchToProps = () => ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(IntlProviderWrapper)

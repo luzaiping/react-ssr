@@ -3,10 +3,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Router, browserHistory/* , hashHistory */ } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-
+import { Provider } from 'react-redux'
 import configureStore from '../common/store/configureStore'
 import defaultConfig from '../config/config'
-import RootProvider from './RootProvider'
+// import RootProvider from './RootProvider'
+import Root from './Root'
 
 function start({ routes, rootReducer, rootId = 'root', config = {} }) {
 
@@ -26,9 +27,11 @@ function start({ routes, rootReducer, rootId = 'root', config = {} }) {
   // runSaga()
   
   render(
-    <RootProvider store={store} i18nConfig={composedConfig.i18n}>
-      <Router routes={routes} history={history}/>
-    </RootProvider>,
+    <Provider store={store}>
+      <Root i18nConfig={composedConfig.i18n}>
+        <Router routes={routes} history={history}/>
+      </Root>
+    </Provider>,
     document.getElementById(rootId)
   )
 }

@@ -1,6 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import styles from './app.css'
 import counterAction from '../actions/counterAction'
+// import {defineMessages, intlShape, injectIntl} from 'react-intl'
+import {FormattedMessage} from 'react-intl'
+
+/* const messages = defineMessages({
+  'currentValue': {
+    id: 'currentValue',
+    defaultMessage: '当前值'
+  }
+}) */
 
 export default class App extends Component {
   /**
@@ -19,7 +28,8 @@ export default class App extends Component {
     let { count, items = [], increment, decrement } = this.props
     return (
       <div onClick={this.onClick} className={styles.wrapper}>
-        当前值：{count}
+        <FormattedMessage id='app.currentNumber' defaultMessage='当前值：'/>：{count}
+        {/* 当前值：{count} */}
         <div className={styles.btnWrapper}>
           <input type='button' value='increment' onClick={increment} className={styles.firstBtn}/>
           <input type='button' value='decrement' onClick={decrement}/>
