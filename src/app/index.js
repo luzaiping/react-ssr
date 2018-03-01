@@ -6,7 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import configureStore from '../common/store/configureStore'
 import defaultConfig from '../config/config'
-import { getProvider } from './RootProvider'
+import RootProvider from './RootProvider'
 
 function start({ routes, rootReducer, rootId = 'root', config = {} }) {
 
@@ -25,8 +25,6 @@ function start({ routes, rootReducer, rootId = 'root', config = {} }) {
   // 运行saga
   // runSaga()
   
-  let RootProvider = getProvider(composedConfig.i18n)
-
   render(
     <RootProvider store={store} i18nConfig={composedConfig.i18n}>
       <Router routes={routes} history={history}/>

@@ -15,6 +15,11 @@ module.exports = merge.smartStrategy(
     new webpack.DefinePlugin({
       'process.env': {NODE_ENV: JSON.stringify('production')}
     }),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        toplevel: true
+      }
+    })
   ]
 })

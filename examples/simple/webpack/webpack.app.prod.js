@@ -26,7 +26,13 @@ let config = merge.smartStrategy(
     new webpack.optimize.CommonsChunkPlugin({
       names: [ 'vendors' ]
     }),
-    new UglifyJSPlugin()
+    new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        toplevel: true,
+        ie8: true
+      }
+    })
   ]
 })
 

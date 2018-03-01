@@ -20,6 +20,8 @@
     "redux-logger": "^3.0.6"
   },
   "dependencies": {
+    "intl": "^1.2.5",
+    "intl-locales-supported": "^1.0.0",
     "react": "^0.14.6",
     "react-dom": "^0.14.0",
     "react-intl": "^2.4.0",
