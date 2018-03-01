@@ -22,7 +22,7 @@ module.exports = merge.smartStrategy(
     'module.rules': 'append'
   }
 )(commonConfig, {
-  entry: path.resolve(baseDirName, 'entry', 'ssr.js'),
+  entry: path.resolve(baseDirName, 'entry', 'ssr.js'), // 供 j2v8 或 nodejs 调用，无需分成多个entry
   output: {
     path: path.resolve(baseDirName, 'dist'),
     filename: 'ssr.js',

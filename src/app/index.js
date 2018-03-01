@@ -1,12 +1,16 @@
 import 'babel-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
-import { browserHistory/* , hashHistory */ } from 'react-router'
+import { Router, browserHistory/* , hashHistory */ } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import configureStore from '../common/store/configureStore'
-import Root from './root'
 
-function start({ routes, rootReducer, rootId = 'root' }) {
+import configureStore from '../common/store/configureStore'
+import defaultConfig from '../config/config'
+import { getProvider } from './RootProvider'
+
+function start({ routes, rootReducer, rootId = 'root', config = {} }) {
+
+  let composedConfig = { ...defaultConfig, ...config }
 
   // Grab the state from a global variable injected into the server-generated HTML
   const preloadedState = window.__PRE_LOADED_STATE__
@@ -21,8 +25,12 @@ function start({ routes, rootReducer, rootId = 'root' }) {
   // 运行saga
   // runSaga()
   
+  let RootProvider = getProvider(composedConfig.i18n)
+
   render(
-    <Root store={store} routes={routes} history={history}/>,
+    <RootProvider store={store} i18nConfig={composedConfig.i18n}>
+      <Router routes={routes} history={history}/>
+    </RootProvider>,
     document.getElementById(rootId)
   )
 }
