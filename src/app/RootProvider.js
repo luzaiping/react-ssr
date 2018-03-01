@@ -21,6 +21,13 @@ export function getProvider(i18nConfig = {}) {
       if (item && item.trim()) {
         let localeData = require(`react-intl/locale-data/${item}`)
         addLocaleData(localeData)
+        // 采用 import 动态加载，在 webpack 构建的时候，会将 import 内容输出成单独的 chunk
+        // 更关键的是，构建的时候 item 变量还没有值，webpack 最终会将 'react-intl/locale-data' 文件夹
+        // 下所有文件都输出成 chunk。下面这样的实现方式无法满足运行时动态加载文件的需求。
+        /* import(`react-intl/locale-data/${item}`).then(localeData => {
+          console.log('localeData:', localeData)
+          addLocaleData(localeData) 
+        }) */
       }
     }
     supportedLocales.includes(DEFAULT_LOCALE) && addLocaleData({ locale: 'zh-CN', parentLocale: DEFAULT_LOCALE })
