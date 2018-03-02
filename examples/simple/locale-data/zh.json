@@ -1,3 +1,11 @@
 {
-  "app.currentNumber": "当前值"
+  "layout.chooseLanguage": "选择语言",
+  "layout.title": "导航",
+  "layout.homePage": "首页",
+  "layout.testPage": "测试页",
+  "languageSelection.zh": "中文",
+  "languageSelection.en": "英文",
+  "list.currentNumber": "当前值",
+  "list.increment": "增加",
+  "list.decrement": "减少"
 }

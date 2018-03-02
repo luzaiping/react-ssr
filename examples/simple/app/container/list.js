@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import counterAction from '../actions/counterAction'
-import App from '../components/app'
+import List from '../components/list'
 
 function mapStateToProps(state) {
   return state.counter
@@ -17,5 +17,5 @@ export default connect(mapStateToProps, mapDispatchToProps, (x, y, props) => {
     ...y,
     ...props
   }
-})(App)
+})(List)
 

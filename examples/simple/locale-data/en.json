@@ -1,3 +1,11 @@
 {
-  "app.currentNumber": "current number"
+  "app.currentNumber": "current number",
+  "layout.chooseLanguage": "Choose Language",
+  "layout.title": "navigation",
+  "layout.homePage": "home",
+  "layout.testPage": "test",
+  "languageSelection.zh": "chinese",
+  "languageSelection.en": "english",
+  "list.increment": "increment",
+  "list.decrement": "decrement"
 }

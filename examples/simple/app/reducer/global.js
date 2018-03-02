@@ -1,12 +1,12 @@
-import { SET_LOCALE } from '../constants/actionConstants'
+import { SET_LANGUAGE } from '../constants/actionConstants'
 
-export default (state = { locale: 'zh' }, action) => {
+export default (state = { language: 'zh' }, action) => {
   switch (action.type) {
-  case SET_LOCALE: {
-    let { payload = {} } = action
+  case SET_LANGUAGE: {
+    let { language } = action.payload
     return {
       ...state,
-      locale: payload.locale
+      language
     }
   }
   default:

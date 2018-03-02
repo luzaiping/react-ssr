@@ -77,7 +77,7 @@ IntlProviderWrapper.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  locale : state.locale || (state.global && state.global.locale)
+  locale : state.locale || (state.global && state.global.language)
 })
 
 const mapDispatchToProps = () => ({})
