@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react' 
-import IntlProviderWrapper from './IntlProviderWrapper'
+import IntlProviderWrapper from './i18n/IntlProviderWrapper'
 
 export default class RootProvider extends Component {
 

@@ -27,9 +27,9 @@ class List extends Component {
     return counterAction.getData(params)
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     this.props.getData()
-  } */
+  }
 
   render() {
     let { count, items = [], increment, decrement, intl } = this.props

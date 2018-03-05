@@ -2,7 +2,9 @@ import 'babel-polyfill'
 import { match, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from '../common/store/configureStore'
+import defaultConfig from '../config/config'
 import { handleRouter } from './router'
+import translateRootReducer from '../common/translateRootReducer'
 
 function start({ routes, rootReducer, config = {} }) {
 
@@ -11,6 +13,9 @@ function start({ routes, rootReducer, config = {} }) {
   if (process.env.NODE_ENV === 'production') {
     global.render = render
   }
+
+  let finalConfig = { ...defaultConfig, ...config }
+  let finalRootReducer = translateRootReducer(finalConfig.i18n, rootReducer)
 
   return render
   
@@ -27,7 +32,7 @@ function start({ routes, rootReducer, config = {} }) {
 
     const memoryHistory = createMemoryHistory(`/${location}`)
     // 构建创始的 redux store
-    let store = configureStore(rootReducer, memoryHistory)
+    let store = configureStore(finalRootReducer, memoryHistory)
     const history = syncHistoryWithStore(memoryHistory, store)
     
     return new Promise((resolve, reject) => {

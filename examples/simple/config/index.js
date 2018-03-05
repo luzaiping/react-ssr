@@ -4,7 +4,7 @@ module.exports = {
   title: 'SSR Demo',
   i18n: {
     enableI18n: true, //
-    initLocale: 'zh', // 当前使用的语言
+    initialLocale: 'zh', // 默认使用的语言
     supportedLocales: [ 'zh', 'en' ], // 支持的语言
     messages: {
       zh: require('../locale-data/zh.json'),

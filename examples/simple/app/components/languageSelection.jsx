@@ -16,7 +16,7 @@ export default class LanguageSelection extends Component {
   }
   
   onLanguageClick() {
-    this.props.setLanguage({ language: this.props.language })
+    this.props.setLanguage( this.props.language )
   }
 
   render() {

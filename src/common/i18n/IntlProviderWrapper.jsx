@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {addLocaleData, IntlProvider} from 'react-intl'
-import typeUtils from '../utils/typeUtils'
+import typeUtils from '../../utils/typeUtils'
 
 const DEFAULT_LOCALE = 'zh'
 
@@ -59,10 +59,12 @@ class IntlProviderWrapper extends Component {
   }
 
   render() {
-    let { initLocale = '', messages = {} } = this.props.i18nConfig
-    let locale = this.props.locale || initLocale || DEFAULT_LOCALE
-
+    let { initialLocale = '', messages = {} } = this.props.i18nConfig
+    let locale = this.props.locale || initialLocale || DEFAULT_LOCALE
+    
     return (
+      // TODO 如果启用服务端渲染，那么 messages 应该由服务端提供
+      // 需要做一个fallback处理，假设 locale 是 zh-CN, 先获取 zh-CN.json，没有就获取 zh.json，再没有就返回 `defaultLocale`.json，再没有就报错
       <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
         { this.props.children }
       </IntlProvider>
@@ -77,7 +79,7 @@ IntlProviderWrapper.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  locale : state.locale || (state.global && state.global.language)
+  locale : state.i18n.locale
 })
 
 const mapDispatchToProps = () => ({})

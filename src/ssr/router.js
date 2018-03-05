@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { RouterContext } from 'react-router'
 import defaultConfig from '../config/config'
-import Root from '../app/Root'
+import Root from '../common/Root'
 
 /**
  * 路由匹配的处理：

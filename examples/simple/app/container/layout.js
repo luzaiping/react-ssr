@@ -1,18 +1,21 @@
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import globalAction from '../actions/globalAction'
+// import {bindActionCreators} from 'redux'
 import Layout from '../components/layout'
-import { i18n } from '../../config'
+import config from '../../config'
+import { setLocale } from '../../../../src/app'
+
 function mapStateToProps(state) {
   return {
-    language: state.global.language,
-    supportedLocales: i18n.supportedLocales
+    language: state.i18n.language,
+    supportedLocales: config.i18n.supportedLocales
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(globalAction, dispatch)
-
+  return {
+    setLanguage: language => dispatch(setLocale(language))
+  }
+  // return bindActionCreators(globalAction, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, (x, y, props) => {
