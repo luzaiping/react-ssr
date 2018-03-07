@@ -11,7 +11,6 @@ const fs = require('fs')
 const render = require('./dist/ssr.js')
 
 const isProduction = process.env.NODE_ENV === 'production'
-let template
 
 const app = express()
 
@@ -54,9 +53,7 @@ function ssrMiddleware(req = {}, res) {
   let { query = {}, params } = req
 
   try {
-    template = template || getTemplate()
-
-    render(template, { query: { route: query.r }})
+    render(getTemplate(), { query: { route: query.r }})
       .then( (result = {} ) => {
         let { code, html, redirectLocation = {} } = result
         if (code) {
